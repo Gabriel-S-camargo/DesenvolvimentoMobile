@@ -1,0 +1,3 @@
+interface Voar {
+    fun executaVoo();
+}
