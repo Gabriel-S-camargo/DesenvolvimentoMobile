@@ -2,7 +2,7 @@ package Class
 
 class AnaoDaMontanha(var bonus: Bonus,
                      private var nome: String,
-                     var forca: Int = 8,
+                     private var forca: Int = 8,
                      private var destreza: Int = 8,
                      private var constituicao: Int = 8,
                      private var inteligencia: Int = 8,
