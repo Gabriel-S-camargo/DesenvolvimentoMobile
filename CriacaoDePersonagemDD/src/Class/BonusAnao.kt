@@ -1,9 +1,8 @@
 package Class
 
-final class BonusAnao : Bonus {
-
-    override fun recebeBonusClasse(personagem: Personagem) {
-        var forca = personagem.getForca()
-        println("Anao forte + 2");
+class BonusAnao : Bonus<AnaoDaMontanha> {
+    override fun recebeBonusClasse(anao: AnaoDaMontanha) {
+        anao.forca += 2
+        anao.constituicao += 2
     }
 }

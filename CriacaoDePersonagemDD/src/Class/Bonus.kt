@@ -1,7 +1,7 @@
 package Class
 
-interface Bonus {
+interface Bonus<T> {
 
-    fun recebeBonusClasse(personagem: Personagem)
+    fun recebeBonusClasse(personagem: T)
 
 }
