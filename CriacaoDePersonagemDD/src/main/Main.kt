@@ -139,8 +139,6 @@ fun atribuirBonus(personagem: Personagem) {
     }
 }
 
-
-
 fun main() {
 
     val niveisHashMap = HashMap<Int, Int>()
