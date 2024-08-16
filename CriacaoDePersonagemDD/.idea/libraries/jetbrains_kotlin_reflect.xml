@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="jetbrains.kotlin.reflect" type="repository">
+    <properties maven-id="org.jetbrains.kotlin:kotlin-reflect:2.0.20-RC" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-reflect-2.0.20-RC.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-2.0.20-RC.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-13.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
