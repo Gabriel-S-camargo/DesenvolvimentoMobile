@@ -7,10 +7,7 @@ package main
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.declaredMemberProperties
 
-import Class.AnaoDaMontanha
-import Class.Elfo
-import Class.Humano
-import Class.Personagem
+import Class.*
 
 
 fun menuClasses() {
