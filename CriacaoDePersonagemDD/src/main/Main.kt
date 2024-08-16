@@ -10,7 +10,6 @@ import kotlin.reflect.full.declaredMemberProperties
 import Class.AnaoDaMontanha
 import Class.Elfo
 import Class.Humano
-import Class.BonusAnao
 import Class.Personagem
 
 
@@ -117,26 +116,32 @@ fun distribuirAtributos(personagem: Personagem, hashmap: HashMap<Int, Int>) {
 fun atribuirBonus(personagem: Personagem) {
     when (personagem) {
         is AnaoDaMontanha -> {
-            var anao : AnaoDaMontanha = personagem
-            personagem.forca+2
-            personagem.constituicao +2
-            println("Bonus de Classe Aplicado!!\nForça +2 e Constituicao +2")
+            personagem.forca += 2
+            personagem.constituicao += 2
+            println("Bônus de Classe Anão Aplicado!!\nForça +2 e Constituição +2")
         }
 
-        is Elfo ->{
-            var elfo : Elfo = personagem
-            personagem.forca+2
-            personagem.constituicao +2
-            println("Bonus de Classe Aplicado!!\nForça +2 e Constituicao +2")
+        is Elfo -> {
+            personagem.destreza += 2
+            personagem.inteligencia += 1
+            personagem.sabedoria += 1
+            personagem.carisma += 1
+            println("Bônus de Classe Elfo Aplicado!!\nForça +2 e Constituição +2")
         }
-        is Humano ->{
-            var humano : Humano = personagem
-            personagem.forca+2
-            personagem.constituicao +2
-            println("Bonus de Classe Aplicado!!\nForça +2 e Constituicao +2")
+
+        is Humano -> {
+            personagem.forca +=1
+            personagem.destreza +=1
+            personagem.constituicao +=1
+            personagem.inteligencia +=1
+            personagem.sabedoria +=1
+            personagem.carisma +=1
+
+            println("Bônus de Classe Humano Aplicado!!\nForça +2 e Constituição +2")
         }
     }
 }
+
 
 
 fun main() {
@@ -156,7 +161,6 @@ fun main() {
     distribuirAtributos(hashmap = niveisHashMap, personagem = personagem )
 
     atribuirBonus(personagem)
-
 
     println( personagem.toString())
 
