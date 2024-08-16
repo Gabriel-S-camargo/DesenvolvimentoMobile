@@ -53,8 +53,8 @@ fun menuStart(): Personagem {
 
     return when (opcaoClasse) {
         1 -> AnaoDaMontanha(nome = nomeClasse, pontosDisponiveis = 27)
-        2 -> Elfo(nome = nomeClasse, pontosDisponiveis = 27)
-        3 -> Humano(nome =nomeClasse, pontosDisponiveis = 27)
+        2 -> Humano(nome =nomeClasse, pontosDisponiveis = 27)
+        3 -> Elfo(nome = nomeClasse, pontosDisponiveis = 27)
         else -> AnaoDaMontanha(nome =nomeClasse, pontosDisponiveis = 27)
     }
 }
@@ -81,7 +81,7 @@ fun distribuirAtributos(personagem: Personagem, hashmap: HashMap<Int, Int>) {
                     @Suppress("UNCHECKED_CAST")
                     nivelTemp = 8
                     (property as KMutableProperty1<Personagem, Int>).setter.call(personagem, nivelTemp)
-                    pontosValidos = true // Para sair do loop
+                    pontosValidos = true
                 } else {
                     val pontosUtilizados: Int? = hashmap[nivelTemp]
                     val pontosDisponiveis: Int = personagem.pontosDisponiveis
@@ -163,18 +163,6 @@ fun main() {
     atribuirBonus(personagem)
 
     println( personagem.toString())
-
-
-
-
-// chamada de metodo base
-//    val anao : AnaoDaMontanha = AnaoDaMontanha (BonusAnao(), "Farin");
-//
-//    println(anao.toString());
-//
-//    anao.bonus?.recebeBonusClasse(anao)
-//
-//    println(anao.toString());
 
 
 }
