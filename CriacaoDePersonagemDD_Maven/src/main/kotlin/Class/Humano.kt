@@ -8,11 +8,11 @@ class Humano(
     override var inteligencia: Int = 8,
     override var sabedoria: Int = 8,
     override var carisma: Int = 8,
-    override var pontosDisponiveis: Int) :
+    override var pontosDisponiveis: Int = 27) :
     Personagem(nome, forca, destreza, constituicao, inteligencia, sabedoria,carisma, pontosDisponiveis) {
 
     override fun toString(): String {
-        return super.toString() + "\nClasse: Elfo";
+        return super.toString() + "\nClasse: Humano";
     }
 
 
