@@ -5,7 +5,7 @@ import Interface.Bonus
 import Class.AnaoDaMontanha
 import Class.Personagem
 
-class Humano : Bonus {
+class Humano : Personagem(), Bonus {
 
     override fun recebeBonusClasse(personagem: Personagem) {
         personagem.forca +=1
@@ -19,7 +19,7 @@ class Humano : Bonus {
 
 
     override fun toString(): String {
-        return super.toString() + "\nClasse: Elfo";
+        return super.toString() + "\nClasse: Humano";
     }
 
 }

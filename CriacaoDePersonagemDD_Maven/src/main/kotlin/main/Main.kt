@@ -1,5 +1,6 @@
 package main
 
+import Class.AnaoDaMontanha
 import Func.Func
 
 fun main() {
@@ -17,7 +18,8 @@ fun main() {
         niveisHashMap[niveis[i]] = custos[i]
     }
 
-    val personagem = funcao.menuStart()
+   val personagem = funcao.menuStart()
+
     funcao.distribuirAtributos( personagem, niveisHashMap )
 
     funcao.atribuirBonus(personagem)

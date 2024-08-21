@@ -4,17 +4,20 @@ import Interface.Bonus
 import Class.AnaoDaMontanha
 import Class.Personagem
 
-class AnaoDaMontanha : Bonus {
+class AnaoDaMontanha : Personagem(), Bonus {
+
+
+
 
     override fun recebeBonusClasse(personagem: Personagem) {
-        personagem.forca + 2
-        personagem.constituicao + 2
-        println("Anão forte, Forca e constituicao + 2")
+        personagem.forca += 2
+        personagem.constituicao += 2
+        println("Bonus Racial do Anão da Montanha Aplicado")
     }
 
 
     override fun toString(): String {
-        return super.toString() + "\nAnão da Montanha";
+        return super.toString() + "\nClasse: Anão da Montanha";
     }
 
 }

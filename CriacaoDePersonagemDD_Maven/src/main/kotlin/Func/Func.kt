@@ -13,7 +13,7 @@ import Class.AnaoDaMontanha
 import Class.Elfo
 import Class.Humano
 import Class.Personagem
-
+import kotlin.reflect.full.memberProperties
 
 
 class Func {
@@ -58,24 +58,25 @@ class Func {
 
         return when (opcaoClasse) {
             1 -> {
-                Personagem(AnaoDaMontanha())
+                AnaoDaMontanha()
             }
             2 -> {
-               Personagem(Humano())
+               Humano()
             }
             3 -> {
-                Personagem(Elfo())
+                Elfo()
 
             }
-            else -> Personagem(AnaoDaMontanha())
+            else -> AnaoDaMontanha()
         }
     }
 
     fun distribuirAtributos(personagem: Personagem, hashmap: HashMap<Int, Int>) {
-        val properties = personagem::class.declaredMemberProperties
+        // Ajuste de declaredMemberProperties para apenas memberProperties,
+        // que faz com que atributos herdados sejam acessados
+        val properties = personagem::class.memberProperties
 
         properties.forEach { property ->
-
             if (property.name == "pontosDisponiveis") {
                 return@forEach
             }
@@ -126,6 +127,10 @@ class Func {
     }
 
     fun atribuirBonus(personagem: Personagem) {
-       // personagem.
+       when(personagem){
+           is AnaoDaMontanha -> personagem.recebeBonusClasse(personagem)
+           is Humano -> personagem.recebeBonusClasse(personagem)
+           is Elfo -> personagem.recebeBonusClasse(personagem)
+       }
     }
 }

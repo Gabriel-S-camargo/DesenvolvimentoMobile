@@ -4,7 +4,7 @@ import Interface.Bonus
 import Class.AnaoDaMontanha
 import Class.Personagem
 
-class Elfo : Bonus {
+class Elfo : Personagem(), Bonus {
 
     override fun recebeBonusClasse(personagem: Personagem) {
         personagem.destreza += 2

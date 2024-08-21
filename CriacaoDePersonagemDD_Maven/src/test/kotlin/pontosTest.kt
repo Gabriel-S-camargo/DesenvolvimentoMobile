@@ -33,15 +33,14 @@ class PersonagemTest {
 
     @Test
     fun testAtribuirBonusAnao() {
-        val anao = AnaoDaMontanha(
-            nome = "farin",
-            forca = 8,
-            destreza = 8,
-            constituicao = 8,
-            inteligencia = 8,
-            sabedoria = 8,
-            carisma = 8
-        )
+        val anao = AnaoDaMontanha();
+
+        anao.forca = 8
+        anao.destreza = 8
+        anao.constituicao = 8
+        anao.inteligencia =8
+        anao.sabedoria = 8
+        anao.carisma = 8
 
         funcao.atribuirBonus(anao)
 
@@ -56,15 +55,14 @@ class PersonagemTest {
 
     @Test
     fun testAtribuirBonusHumano() {
-        val humano = Humano(
-            nome = "eradan",
-            forca = 8,
-            destreza = 8,
-            constituicao = 8,
-            inteligencia = 8,
-            sabedoria = 8,
-            carisma = 8
-        )
+        val humano = Humano();
+
+        humano.forca = 8
+        humano.destreza = 8
+        humano.constituicao = 8
+        humano.inteligencia =8
+        humano.sabedoria = 8
+        humano.carisma = 8
 
         funcao.atribuirBonus(humano)
 
@@ -84,15 +82,14 @@ class PersonagemTest {
     }
     @Test
     fun testAtribuirBonusElfo() {
-        val elfo = Elfo(
-            nome = "eradan",
-            forca = 8,
-            destreza = 8,
-            constituicao = 8,
-            inteligencia = 8,
-            sabedoria = 8,
-            carisma = 8
-        )
+        val elfo = Elfo()
+
+        elfo.forca = 8
+        elfo.destreza = 8
+        elfo.constituicao = 8
+        elfo.inteligencia =8
+        elfo.sabedoria = 8
+        elfo.carisma = 8
 
         funcao.atribuirBonus(elfo)
 

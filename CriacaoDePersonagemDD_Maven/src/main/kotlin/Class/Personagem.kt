@@ -2,7 +2,7 @@ package Class
 
 import Interface.Bonus
 
-open class Personagem(bonus: Bonus) {
+open class Personagem {
 
      var nome : String? = null
      var forca: Int = 8
