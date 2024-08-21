@@ -18,7 +18,7 @@ fun main() {
     }
 
     val personagem = funcao.menuStart()
-    funcao.distribuirAtributos(hashmap = niveisHashMap, personagem = personagem )
+    funcao.distribuirAtributos( personagem, niveisHashMap )
 
     funcao.atribuirBonus(personagem)
 

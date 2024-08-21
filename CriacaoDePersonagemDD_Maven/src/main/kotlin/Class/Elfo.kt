@@ -1,17 +1,22 @@
 package Class
 
-class Elfo(
-    override var nome: String,
-    override var forca: Int = 8,
-    override var destreza: Int = 8,
-    override var constituicao: Int = 8,
-    override var inteligencia: Int = 8,
-    override var sabedoria: Int = 8,
-    override var carisma: Int = 8,
-    override var pontosDisponiveis: Int = 27) :
-    Personagem(nome, forca, destreza, constituicao, inteligencia, sabedoria,carisma, pontosDisponiveis) {
+import Interface.Bonus
+import Class.AnaoDaMontanha
+import Class.Personagem
+
+class Elfo : Bonus {
+
+    override fun recebeBonusClasse(personagem: Personagem) {
+        personagem.destreza += 2
+        personagem.inteligencia += 1
+        personagem.sabedoria += 1
+        personagem.carisma += 1
+        println("Bonus Racial Do Elfo Aplicado")
+    }
+
 
     override fun toString(): String {
         return super.toString() + "\nClasse: Elfo";
     }
+
 }

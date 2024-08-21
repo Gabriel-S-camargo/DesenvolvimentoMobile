@@ -14,6 +14,8 @@ import Class.Elfo
 import Class.Humano
 import Class.Personagem
 
+
+
 class Func {
 
     fun menuClasses() {
@@ -55,10 +57,17 @@ class Func {
         }
 
         return when (opcaoClasse) {
-            1 -> AnaoDaMontanha(nome = nomeClasse, pontosDisponiveis = 27)
-            2 -> Humano(nome =nomeClasse, pontosDisponiveis = 27)
-            3 -> Elfo(nome = nomeClasse, pontosDisponiveis = 27)
-            else -> AnaoDaMontanha(nome =nomeClasse, pontosDisponiveis = 27)
+            1 -> {
+                Personagem(AnaoDaMontanha())
+            }
+            2 -> {
+               Personagem(Humano())
+            }
+            3 -> {
+                Personagem(Elfo())
+
+            }
+            else -> Personagem(AnaoDaMontanha())
         }
     }
 
@@ -117,31 +126,6 @@ class Func {
     }
 
     fun atribuirBonus(personagem: Personagem) {
-        when (personagem) {
-            is AnaoDaMontanha -> {
-                personagem.forca += 2
-                personagem.constituicao += 2
-                println("Bônus de Classe Anão Aplicado!!\nForça +2 e Constituição +2")
-            }
-
-            is Elfo -> {
-                personagem.destreza += 2
-                personagem.inteligencia += 1
-                personagem.sabedoria += 1
-                personagem.carisma += 1
-                println("Bônus de Classe Elfo Aplicado!!\nForça +2 e Constituição +2")
-            }
-
-            is Humano -> {
-                personagem.forca +=1
-                personagem.destreza +=1
-                personagem.constituicao +=1
-                personagem.inteligencia +=1
-                personagem.sabedoria +=1
-                personagem.carisma +=1
-
-                println("Bônus de Classe Humano Aplicado!!\nForça +2 e Constituição +2")
-            }
-        }
+       // personagem.
     }
 }
