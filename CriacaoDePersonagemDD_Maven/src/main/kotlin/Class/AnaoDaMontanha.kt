@@ -1,13 +1,8 @@
 package Class
 
 import Interface.Bonus
-import Class.AnaoDaMontanha
-import Class.Personagem
 
 class AnaoDaMontanha : Personagem(), Bonus {
-
-
-
 
     override fun recebeBonusClasse(personagem: Personagem) {
         personagem.forca += 2

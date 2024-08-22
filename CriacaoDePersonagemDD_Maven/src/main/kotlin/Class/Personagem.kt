@@ -1,7 +1,5 @@
 package Class
 
-import Interface.Bonus
-
 open class Personagem {
 
      var nome : String? = null

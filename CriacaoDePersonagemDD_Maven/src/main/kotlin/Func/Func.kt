@@ -8,15 +8,34 @@ package Func
 //                 Search for "kotlin-reflect" and add the correct version from the results
 
 import kotlin.reflect.KMutableProperty1
-import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
 import Class.AnaoDaMontanha
 import Class.Elfo
 import Class.Humano
 import Class.Personagem
-import kotlin.reflect.full.memberProperties
+// Random
+import kotlin.random.Random
 
 
 class Func {
+
+    fun HashMapNiveis() : HashMap<Int, Int>{
+
+        val niveisHashMap = HashMap<Int, Int>()
+
+        val niveis = arrayOf(8, 9, 10, 11, 12, 13, 14, 15)
+        val custos = arrayOf(0, 1, 2, 3, 4, 5, 7, 9)
+
+        for (i in niveis.indices) {
+            niveisHashMap[niveis[i]] = custos[i]
+        }
+
+        return niveisHashMap
+    }
+
+    fun personagemStatus(personagem :Personagem){
+        println(personagem.toString())
+    }
 
     fun menuClasses() {
         println("[1] Anao Da Montanha")
@@ -69,6 +88,37 @@ class Func {
             }
             else -> AnaoDaMontanha()
         }
+    }
+
+    fun randomizarResultado() : Int{
+
+        val resultado = Random.nextInt(1,6)
+
+        val resultados = Array(4) { 0 }
+
+        return  resultado
+
+    }
+
+    fun randomAtributo(){
+
+        val numRandom : Int
+
+
+
+    }
+
+    fun randomAtributos(personagem: Personagem){
+        val hashAtributo = HashMap<String, Int>()
+
+        val atributos = arrayOf("forca", "destreza", "constituicao", "inteligencia", "sabedoria", "carisma")
+        val niveis = arrayOf(15, 14, 13, 12, 11, 10, 9, 8)
+
+        for (i in niveis.indices) {
+            hashAtributo[atributos[i]] = niveis[i]
+        }
+
+
     }
 
     fun distribuirAtributos(personagem: Personagem, hashmap: HashMap<Int, Int>) {

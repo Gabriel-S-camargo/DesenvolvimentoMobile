@@ -1,8 +1,6 @@
 package Class
 
 import Interface.Bonus
-import Class.AnaoDaMontanha
-import Class.Personagem
 
 class Elfo : Personagem(), Bonus {
 
