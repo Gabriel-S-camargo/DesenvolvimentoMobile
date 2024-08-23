@@ -1,9 +1,9 @@
-import Racas.AnaoDaMontanha
-import Racas.Elfo
-import Racas.Humano
+import classes.racas.AnaoDaMontanha
+import classes.racas.Elfo
+import classes.racas.Humano
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import Func.Func
+import func.Func
 
 class PersonagemTest {
 

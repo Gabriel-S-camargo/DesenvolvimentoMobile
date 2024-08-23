@@ -1,4 +1,4 @@
-package Func
+package func
 
 // Para funcionar isso aqui precisa puxar uma library :
 // passo a passo : Go to File >
@@ -7,13 +7,14 @@ package Func
 //                 From Maven Repository >
 //                 Search for "kotlin-reflect" and add the correct version from the results
 
+import classes.Personagem
+import classes.racas.*
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.memberProperties
-import Racas.*
 
 class Func {
 
-    fun HashMapNiveis(): HashMap<Int, Int> {
+    fun hashMapNiveis(): HashMap<Int, Int> {
 
         val niveisHashMap = HashMap<Int, Int>()
 
@@ -25,6 +26,20 @@ class Func {
         }
 
         return niveisHashMap
+    }
+
+    fun hashMapModificadores(): HashMap<Int, Int> {
+        val modificadoresHashMap = HashMap<Int, Int>()
+
+        val niveis = arrayOf(8, 9, 10, 11, 12, 13, 14, 15, 16, 17)
+
+        val modificadores = arrayOf(-1, -1, 0, 0, 1, 1,2, 2, 3, 3)
+
+        for (i in niveis.indices) {
+            modificadoresHashMap[niveis[i]] = modificadores[i]
+        }
+
+        return modificadoresHashMap
     }
 
     fun personagemStatus(personagem: Personagem) {
@@ -95,12 +110,12 @@ class Func {
         val properties = personagem::class.memberProperties
 
         properties.forEach { property ->
-            if (property.name == "pontosDisponiveis") {
+            if (property.name == "pontosDisponiveis" || property.name == "vida") {
                 return@forEach
             }
 
             if (property is KMutableProperty1<*, *> && property.returnType.classifier == Int::class) {
-                var nivelTemp: Int? = null
+                var nivelTemp: Int?
                 var pontosValidos = false
 
                 do {
@@ -147,26 +162,42 @@ class Func {
 
     fun atribuirBonus(personagem: Personagem) {
         when (personagem) {
-            is AnaoDaMontanha -> personagem.recebeBonusClasse(personagem)
-            is Humano -> personagem.recebeBonusClasse(personagem)
-            is Elfo -> personagem.recebeBonusClasse(personagem)
-            is Draconato -> personagem.recebeBonusClasse(personagem)
-            is MeioOrc -> personagem.recebeBonusClasse(personagem)
-            is Halfing -> personagem.recebeBonusClasse(personagem)
-            is GnomoDaFloresta -> personagem.recebeBonusClasse(personagem)
-            is Anao -> personagem.recebeBonusClasse(personagem)
-            is HalfingRobusto -> personagem.recebeBonusClasse(personagem)
-            is GnomoDasRochas -> personagem.recebeBonusClasse(personagem)
-            is Gnomo -> personagem.recebeBonusClasse(personagem)
-            is AltoElfo -> personagem.recebeBonusClasse(personagem)
-            is AnaoDaColina -> personagem.recebeBonusClasse(personagem)
-            is Tiefling -> personagem.recebeBonusClasse(personagem)
-            is HalfingPesLeves -> personagem.recebeBonusClasse(personagem)
-            is Drow -> personagem.recebeBonusClasse(personagem)
-            is MeioElfo -> personagem.recebeBonusClasse(personagem)
-            is ElfoDaFloresta -> personagem.recebeBonusClasse(personagem)
+            is AnaoDaMontanha -> personagem.recebeBonusRacial(personagem)
+            is Humano -> personagem.recebeBonusRacial(personagem)
+            is Elfo -> personagem.recebeBonusRacial(personagem)
+            is Draconato -> personagem.recebeBonusRacial(personagem)
+            is MeioOrc -> personagem.recebeBonusRacial(personagem)
+            is Halfing -> personagem.recebeBonusRacial(personagem)
+            is GnomoDaFloresta -> personagem.recebeBonusRacial(personagem)
+            is Anao -> personagem.recebeBonusRacial(personagem)
+            is HalfingRobusto -> personagem.recebeBonusRacial(personagem)
+            is GnomoDasRochas -> personagem.recebeBonusRacial(personagem)
+            is Gnomo -> personagem.recebeBonusRacial(personagem)
+            is AltoElfo -> personagem.recebeBonusRacial(personagem)
+            is AnaoDaColina -> personagem.recebeBonusRacial(personagem)
+            is Tiefling -> personagem.recebeBonusRacial(personagem)
+            is HalfingPesLeves -> personagem.recebeBonusRacial(personagem)
+            is Drow -> personagem.recebeBonusRacial(personagem)
+            is MeioElfo -> personagem.recebeBonusRacial(personagem)
+            is ElfoDaFloresta -> personagem.recebeBonusRacial(personagem)
             else -> println("Classe desconhecida! Nenhum bônus aplicado.")
         }
+    }
+
+    fun atribuirVida(personagem: Personagem){
+
+        val constituicao = personagem.constituicao
+
+        val hashMap = hashMapModificadores()
+
+        val modificador = hashMap.get(constituicao)
+
+        if (modificador != null) {
+            personagem.vida += modificador
+        }else{
+            println("Erro ao atribuir Modificador de constituicao")
+        }
+
     }
 
 }

@@ -1,10 +1,11 @@
-package Racas
+package classes.racas
 
-import Interface.Bonus
+import classes.Personagem
+import interface_.Bonus
 
 class AnaoDaMontanha (nome : String): Personagem(nome), Bonus {
 
-    override fun recebeBonusClasse(personagem: Personagem) {
+    override fun recebeBonusRacial(personagem: Personagem) {
         personagem.forca += 2
         personagem.constituicao += 2
         println("Bonus Racial do Anão da Montanha Aplicado")
@@ -12,7 +13,7 @@ class AnaoDaMontanha (nome : String): Personagem(nome), Bonus {
 
 
     override fun toString(): String {
-        return super.toString() + "\nClasse: Anão da Montanha";
+        return super.toString() + "\nClasse: Anão da Montanha"
     }
 
 }

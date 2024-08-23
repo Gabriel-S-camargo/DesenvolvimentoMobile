@@ -1,15 +1,16 @@
-package Racas
+package classes.racas
 
-import Interface.Bonus
+import classes.Personagem
+import interface_.Bonus
 
 class Drow(nome: String) : Personagem(nome), Bonus {
 
-    override fun recebeBonusClasse(personagem: Personagem) {
+    override fun recebeBonusRacial(personagem: Personagem) {
         personagem.carisma += 1
         println("Bonus Racial do Drow Aplicado")
     }
 
     override fun toString(): String {
-        return super.toString() + "\nClasse: Drow";
+        return super.toString() + "\nClasse: Drow"
     }
 }

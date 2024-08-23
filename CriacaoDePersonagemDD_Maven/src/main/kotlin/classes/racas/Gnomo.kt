@@ -1,15 +1,16 @@
-package Racas
+package classes.racas
 
-import Interface.Bonus
+import classes.Personagem
+import interface_.Bonus
 
 class Gnomo(nome: String) : Personagem(nome), Bonus {
 
-    override fun recebeBonusClasse(personagem: Personagem) {
+    override fun recebeBonusRacial(personagem: Personagem) {
         personagem.inteligencia += 2
         println("Bonus Racial do Gnomo Aplicado")
     }
 
     override fun toString(): String {
-        return super.toString() + "\nClasse: Gnomo";
+        return super.toString() + "\nClasse: Gnomo"
     }
 }

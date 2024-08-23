@@ -1,4 +1,4 @@
-package Racas
+package classes
 
 open class Personagem(var nome : String? = null) {
      var forca: Int = 8
@@ -7,6 +7,7 @@ open class Personagem(var nome : String? = null) {
      var inteligencia: Int = 8
      var sabedoria: Int = 8
      var carisma: Int = 8
+     var vida = 10
      var pontosDisponiveis: Int = 27
 
 
@@ -18,7 +19,8 @@ open class Personagem(var nome : String? = null) {
                 "\nInteligencia: " + inteligencia.toString() +
                 "\nSabedoria: " + sabedoria.toString() +
                 "\nCarisma: " + carisma.toString() +
-                "\nPontosDisponiveis: " + pontosDisponiveis.toString()
+                "\nPontosDisponiveis: " + pontosDisponiveis.toString() +
+                "\nVida: " + vida.toString()
     }
 }
 
