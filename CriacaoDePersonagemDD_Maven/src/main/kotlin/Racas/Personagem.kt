@@ -1,8 +1,6 @@
-package Class
+package Racas
 
-open class Personagem {
-
-     var nome : String? = null
+open class Personagem(var nome : String? = null) {
      var forca: Int = 8
      var destreza: Int = 8
      var constituicao: Int = 8

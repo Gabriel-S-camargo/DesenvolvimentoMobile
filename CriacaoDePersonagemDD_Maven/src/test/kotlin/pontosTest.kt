@@ -1,6 +1,6 @@
-import Class.AnaoDaMontanha
-import Class.Elfo
-import Class.Humano
+import Racas.AnaoDaMontanha
+import Racas.Elfo
+import Racas.Humano
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import Func.Func
@@ -33,7 +33,7 @@ class PersonagemTest {
 
     @Test
     fun testAtribuirBonusAnao() {
-        val anao = AnaoDaMontanha();
+        val anao = AnaoDaMontanha(nome = "Farin");
 
         anao.forca = 8
         anao.destreza = 8
@@ -55,7 +55,7 @@ class PersonagemTest {
 
     @Test
     fun testAtribuirBonusHumano() {
-        val humano = Humano();
+        val humano = Humano(nome = "Farin");
 
         humano.forca = 8
         humano.destreza = 8
@@ -82,7 +82,7 @@ class PersonagemTest {
     }
     @Test
     fun testAtribuirBonusElfo() {
-        val elfo = Elfo()
+        val elfo = Elfo(nome = "Farin")
 
         elfo.forca = 8
         elfo.destreza = 8

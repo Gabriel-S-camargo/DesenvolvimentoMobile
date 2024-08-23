@@ -1,6 +1,6 @@
 package Interface
 
-import Class.Personagem
+import Racas.Personagem
 
 interface Bonus {
 

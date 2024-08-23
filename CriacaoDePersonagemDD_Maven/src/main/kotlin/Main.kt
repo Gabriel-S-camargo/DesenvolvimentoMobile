@@ -1,6 +1,3 @@
-package main
-
-import Class.Personagem
 import Func.Func
 
 fun main() {
@@ -11,7 +8,7 @@ fun main() {
 
     val personagem = funcao.menuStart()
 
-    funcao.distribuirAtributos( personagem, niveisHashMap )
+    funcao.distribuirAtributos(personagem, niveisHashMap)
 
     funcao.atribuirBonus(personagem)
 

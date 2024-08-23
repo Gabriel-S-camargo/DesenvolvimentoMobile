@@ -1,8 +1,8 @@
-package Class
+package Racas
 
 import Interface.Bonus
 
-class AnaoDaMontanha : Personagem(), Bonus {
+class AnaoDaMontanha (nome : String): Personagem(nome), Bonus {
 
     override fun recebeBonusClasse(personagem: Personagem) {
         personagem.forca += 2
