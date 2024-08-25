@@ -6,7 +6,7 @@ import interface_.Bonus
 class HalfingPesLeves(nome: String) : Personagem(nome), Bonus {
 
     override fun recebeBonusRacial(personagem: Personagem) {
-        personagem.destreza += 2
+
         personagem.carisma += 1
         println("Bonus Racial do Halfing Pés-Leves Aplicado")
     }

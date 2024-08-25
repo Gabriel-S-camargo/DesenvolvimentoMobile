@@ -7,7 +7,6 @@ class MeioElfo(nome: String) : Personagem(nome), Bonus {
 
     override fun recebeBonusRacial(personagem: Personagem) {
         personagem.carisma += 2
-        personagem.inteligencia += 1 // Pode ser distribuído para outros atributos, aqui é um exemplo
         println("Bonus Racial do Meio-Elfo Aplicado")
     }
 

@@ -7,7 +7,6 @@ class GnomoDaFloresta(nome: String) : Personagem(nome), Bonus {
 
     override fun recebeBonusRacial(personagem: Personagem) {
         personagem.destreza += 1
-        personagem.inteligencia += 2
         println("Bonus Racial do Gnomo da Floresta Aplicado")
     }
 
