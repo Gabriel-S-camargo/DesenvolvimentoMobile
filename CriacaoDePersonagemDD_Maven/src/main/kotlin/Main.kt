@@ -14,6 +14,8 @@ fun main() {
 
     funcao.atribuirVida(personagem)
 
+    funcao.atribuirModificadores(personagem)
+
     funcao.personagemStatus(personagem)
 
 

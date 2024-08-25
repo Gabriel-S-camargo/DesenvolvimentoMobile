@@ -16,21 +16,6 @@ class PersonagemTest {
 
     val funcao = Func();
 
-//    @Test
-//    fun testAtribuirPontosAnao() {
-//        val anaoDaMontanha = AnaoDaMontanha(nome = "Farin", pontosDisponiveis = 27)
-//
-//        distribuirAtributos(anaoDaMontanha, niveisHashMap)
-//
-//        // Verificações
-//        assertTrue(anaoDaMontanha.forca in 8..15)
-//        assertTrue(anaoDaMontanha.destreza in 8..15)
-//        assertTrue(anaoDaMontanha.constituicao in 8..15)
-//        assertTrue(anaoDaMontanha.inteligencia in 8..15)
-//        assertTrue(anaoDaMontanha.sabedoria in 8..15)
-//        assertTrue(anaoDaMontanha.carisma in 8..15)
-//    }
-
     @Test
     fun testAtribuirBonusAnao() {
         val anao = AnaoDaMontanha(nome = "Farin");

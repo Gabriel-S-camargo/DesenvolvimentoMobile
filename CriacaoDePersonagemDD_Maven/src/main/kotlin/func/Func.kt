@@ -110,7 +110,7 @@ class Func {
         val properties = personagem::class.memberProperties
 
         properties.forEach { property ->
-            if (property.name == "pontosDisponiveis" || property.name == "vida") {
+            if (property.name == "pontosDisponiveis" || property.name == "vida" || property.name == "modificadores") {
                 return@forEach
             }
 
@@ -200,4 +200,43 @@ class Func {
 
     }
 
+    fun atribuirModificadores(personagem: Personagem) {
+
+        val properties = personagem::class.memberProperties
+
+        val modificadoresHashMap = hashMapModificadores()
+
+        properties.forEach { property ->
+
+            if (property.name == "pontosDisponiveis" || property.name == "vida") {
+                return@forEach
+            }
+
+            val valorAtual = (property as KMutableProperty1<Personagem, *>).get(personagem)
+
+            val modificador = modificadoresHashMap[valorAtual] ?: 0
+
+            personagem.modificadores[property.name] = modificador
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
