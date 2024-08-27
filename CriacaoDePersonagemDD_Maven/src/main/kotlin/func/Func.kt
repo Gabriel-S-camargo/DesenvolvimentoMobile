@@ -47,7 +47,7 @@ class Func {
     }
 
     fun menuClasses() {
-        println("[1] Anão da Montanha   [2] Humano        [3] Elfo")
+        println("\n[1] Anão da Montanha   [2] Humano        [3] Elfo")
         println("[4] Draconato          [5] Meio-Orc      [6] Halfing")
         println("[7] Gnomo da Floresta  [8] Anão          [9] Halfing Robusto")
         println("[10] Gnomo das Rochas  [11] Gnomo        [12] Alto Elfo")
@@ -58,7 +58,7 @@ class Func {
     fun menuStart(): Personagem {
 
 
-        println("Bem-vindo ao Criador de Personagem D & D")
+        println("\nBem-vindo ao Criador de Personagem D & D")
         println("Escolha a Raca do seu personagem:")
         menuClasses()
 
@@ -149,7 +149,7 @@ class Func {
                                 nivelTemp = 8
                                 @Suppress("UNCHECKED_CAST")
                                 (property as KMutableProperty1<Personagem, Int>).setter.call(personagem, nivelTemp)
-                                pontosValidos = true // Para sair do loop
+                                pontosValidos = true
                             }
                         }
                     }
@@ -211,7 +211,7 @@ class Func {
             if (property.name == "pontosDisponiveis" || property.name == "vida") {
                 return@forEach
             }
-
+            @Suppress("UNCHECKED_CAST")
             val valorAtual = (property as KMutableProperty1<Personagem, *>).get(personagem)
 
             val modificador = modificadoresHashMap[valorAtual] ?: 0
