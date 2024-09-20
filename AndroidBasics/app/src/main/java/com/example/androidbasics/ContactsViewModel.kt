@@ -17,4 +17,8 @@ class ContactsViewModel(
         backgroundcolor = Color.Red
     }
 
+    fun changeBackgroundColorDefault(){
+        backgroundcolor = Color.White
+    }
+
 }
