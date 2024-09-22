@@ -1,7 +1,6 @@
 package com.example.androidbasics
 
 
-import Personagem
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,38 +8,35 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
-import strategy.bonusRacial.*
+import strategy.funcoes.*
+
 
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CharacterFormScreen()
         }
     }
-
 }
 
 
 @Composable
 fun CharacterFormScreen() {
     var name by remember { mutableStateOf("") }
-    var strength by remember { mutableStateOf("") }
-    var dexterity by remember { mutableStateOf("") }
-    var constitution by remember { mutableStateOf("") }
-    var intelligence by remember { mutableStateOf("") }
-    var wisdom by remember { mutableStateOf("") }
-    var charisma by remember { mutableStateOf("") }
+    var strength by remember { mutableStateOf("8") }
+    var dexterity by remember { mutableStateOf("8") }
+    var constitution by remember { mutableStateOf("8") }
+    var intelligence by remember { mutableStateOf("8") }
+    var wisdom by remember { mutableStateOf("8") }
+    var charisma by remember { mutableStateOf("8") }
     var selectedRace by remember { mutableStateOf("Alto Elfo") }
+    var remainingPoints by remember { mutableStateOf(27) }
 
     val races = listOf(
         "Alto elfo", "Anão", "Anão da Montanha", "Anão da Colina", "Drow", "Draconato",
@@ -56,36 +52,63 @@ fun CharacterFormScreen() {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text("Criador de Personagem Dungeons And Dragons", style = MaterialTheme.typography.headlineMedium)
-        Text("Pontos Disponíveis: 27")
-        // Campo para Nome
+        Text("Pontos Disponíveis: $remainingPoints")
+
+        RaceDropdown(selectedRace = selectedRace, onRaceSelected = { selectedRace = it }, races = races)
+
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
             label = { Text("Nome do Personagem") }
         )
 
-        AtributoInput("Força", strength) { strength = it }
-        AtributoInput("Destreza", dexterity) { dexterity = it }
-        AtributoInput("Constituição", constitution) { constitution = it }
-        AtributoInput("Inteligência", intelligence) { intelligence = it }
-        AtributoInput("Sabedoria", wisdom) { wisdom = it }
-        AtributoInput("Carisma", charisma) { charisma = it }
-
-        RaceDropdown(selectedRace = selectedRace, onRaceSelected = { selectedRace = it }, races = races)
-
+        // Atributos com validação de pontos ao trocar de campo
+        AtributoInput("Força", strength, remainingPoints) { newStrength ->
+            strength = newStrength
+            remainingPoints = calcularPontosRestantes(listOf(strength, dexterity, constitution, intelligence, wisdom, charisma))
+        }
+        AtributoInput("Destreza", dexterity, remainingPoints) { newDexterity ->
+            dexterity = newDexterity
+            remainingPoints = calcularPontosRestantes(listOf(strength, dexterity, constitution, intelligence, wisdom, charisma))
+        }
+        AtributoInput("Constituição", constitution, remainingPoints) { newConstitution ->
+            constitution = newConstitution
+            remainingPoints = calcularPontosRestantes(listOf(strength, dexterity, constitution, intelligence, wisdom, charisma))
+        }
+        AtributoInput("Inteligência", intelligence, remainingPoints) { newIntelligence ->
+            intelligence = newIntelligence
+            remainingPoints = calcularPontosRestantes(listOf(strength, dexterity, constitution, intelligence, wisdom, charisma))
+        }
+        AtributoInput("Sabedoria", wisdom, remainingPoints) { newWisdom ->
+            wisdom = newWisdom
+            remainingPoints = calcularPontosRestantes(listOf(strength, dexterity, constitution, intelligence, wisdom, charisma))
+        }
+        AtributoInput("Carisma", charisma, remainingPoints) { newCharisma ->
+            charisma = newCharisma
+            remainingPoints = calcularPontosRestantes(listOf(strength, dexterity, constitution, intelligence, wisdom, charisma))
+        }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(onClick = {
+                /*var racaFinal = converterStringParaBonusRacial(selectedRace)
 
-                //var finalRace
+                // Criação do personagem
+                var personagem = criarPersonagem(
+                    racaFinal,
+                    strength.toInt(),
+                    dexterity.toInt(),
+                    constitution.toInt(),
+                    intelligence.toInt(),
+                    wisdom.toInt(),
+                    charisma.toInt()
+                )
 
-                //var personagem = Personagem(bonusRacial = )
+                 */
             }) {
                 Text("Criar Personagem")
-
             }
 
             Button(onClick = {
@@ -97,13 +120,14 @@ fun CharacterFormScreen() {
     }
 }
 
+
+
 @Composable
-fun AtributoInput(label: String, value: String, onValueChange: (String) -> Unit) {
+fun AtributoInput(label: String, value: String, remainingPoints: Int, onValueChange: (String) -> Unit) {
     val attributeValues = (8..15).map { it.toString() }
     var expanded by remember { mutableStateOf(false) }
 
     Column {
-        // Campo de seleção de valor para o atributo
         OutlinedTextField(
             value = value,
             onValueChange = {  },
@@ -114,7 +138,6 @@ fun AtributoInput(label: String, value: String, onValueChange: (String) -> Unit)
                 .clickable { expanded = !expanded }
         )
 
-        // Exibe as opções de 8 a 15 como um Dropdown
         if (expanded) {
             LazyColumn(
                 modifier = Modifier
@@ -122,28 +145,42 @@ fun AtributoInput(label: String, value: String, onValueChange: (String) -> Unit)
                     .height(150.dp) // Limita a altura do dropdown
             ) {
                 items(attributeValues) { attribute ->
-                    Text(
-                        text = attribute,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                onValueChange(attribute) // Atualiza o valor selecionado
-                                expanded = false // Fecha o dropdown ao selecionar
-                            }
-                    )
+                    val cost = calcularCustoAtributo(attribute.toInt())
+
+                    // Permite alterar o valor somente se houver pontos suficientes
+                    if (remainingPoints + calcularCustoAtributo(value.toInt()) >= cost) {
+                        Text(
+                            text = "$attribute (Custo: $cost)",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .clickable {
+                                    onValueChange(attribute)
+                                    expanded = false
+                                }
+                        )
+                    } else {
+                        // Exibe o atributo como desabilitado se o custo for maior que os pontos restantes
+                        Text(
+                            text = "$attribute (Custo: $cost)",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                        )
+                    }
                 }
             }
         }
     }
 }
 
+// Dropdown para selecionar a raça
 @Composable
 fun RaceDropdown(selectedRace: String, onRaceSelected: (String) -> Unit, races: List<String>) {
     var expanded by remember { mutableStateOf(false) }
 
     Column {
-        // Campo de seleção de Raça
         OutlinedTextField(
             value = selectedRace,
             onValueChange = { /* Campo somente de leitura */ },
@@ -179,8 +216,12 @@ fun RaceDropdown(selectedRace: String, onRaceSelected: (String) -> Unit, races: 
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun CharacterFormScreenPreview() {
-    CharacterFormScreen()
-}
+
+
+
+
+
+
+
+
+
