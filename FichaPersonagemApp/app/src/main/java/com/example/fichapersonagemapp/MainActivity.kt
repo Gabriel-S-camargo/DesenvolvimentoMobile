@@ -1,5 +1,6 @@
-package com.example.androidbasics
+package com.example.fichapersonagemapp
 
+import Personagem
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,9 +14,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.androidbasics.SecondActivity
 import strategy.funcoes.*
-import android.util.Log
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @Composable
 fun CharacterFormScreen() {
@@ -45,7 +47,7 @@ fun CharacterFormScreen() {
         "Meio-Orc", "Tiefling"
     )
 
-    val context = LocalContext.current
+    val context = LocalContext.current // Obtenha o contexto correto para a navegação
 
     Column(
         modifier = Modifier
@@ -95,25 +97,28 @@ fun CharacterFormScreen() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+
             Button(onClick = {
-                try {
-                    val intent = Intent(context, SecondActivity::class.java).apply {
-                        putExtra("nome", name)
-                        putExtra("raca", selectedRace)
-                        putExtra("forca", strength.toInt())
-                        putExtra("destreza", dexterity.toInt())
-                        putExtra("constituicao", constitution.toInt())
-                        putExtra("inteligencia", intelligence.toInt())
-                        putExtra("sabedoria", wisdom.toInt())
-                        putExtra("carisma", charisma.toInt())
-                    }
-                    Log.d("MainActivity", "Intent created successfully with: Nome=$name, Raça=$selectedRace")
-                    context.startActivity(intent)
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Error creating intent: ${e.message}")
+
+                val intent = Intent(context, SecondActivity::class.java).apply {
+                    putExtra("nome", name)
+                    putExtra("raca", selectedRace)
+                    putExtra("forca", strength.toInt())
+                    putExtra("destreza", dexterity.toInt())
+                    putExtra("constituicao", constitution.toInt())
+                    putExtra("inteligencia", intelligence.toInt())
+                    putExtra("sabedoria", wisdom.toInt())
+                    putExtra("carisma", charisma.toInt())
                 }
+                context.startActivity(intent)
             }) {
                 Text("Criar Personagem")
+            }
+
+            Button(onClick = {
+                // Ação para consultar modificadores (você pode adicionar sua lógica aqui)
+            }) {
+                Text("Consultar Modificadores")
             }
         }
     }
@@ -183,15 +188,15 @@ fun RaceDropdown(selectedRace: String, onRaceSelected: (String) -> Unit, races: 
             readOnly = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { expanded = !expanded }
+                .clickable { expanded = !expanded } // Controla a expansão da lista
         )
 
-
+        // Exibição da lista de raças usando LazyColumn quando expandido
         if (expanded) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(200.dp) // Limita o tamanho da lista
             ) {
                 items(races) { race ->
                     Text(
@@ -201,7 +206,7 @@ fun RaceDropdown(selectedRace: String, onRaceSelected: (String) -> Unit, races: 
                             .padding(8.dp)
                             .clickable {
                                 onRaceSelected(race)
-                                expanded = false
+                                expanded = false // Fecha a lista ao selecionar
                             }
                     )
                 }
@@ -220,3 +225,4 @@ fun RaceDropdown(selectedRace: String, onRaceSelected: (String) -> Unit, races: 
 
 
 
+}

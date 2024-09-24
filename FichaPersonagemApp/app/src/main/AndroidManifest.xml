@@ -10,17 +10,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AndroidBasics"
+        android:theme="@style/Theme.FichaPersonagemApp"
         tools:targetApi="31">
         <activity
-            android:name="SecondActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MyApp" />
+            android:name=".SecondActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AndroidBasics">
+            android:theme="@style/Theme.FichaPersonagemApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
