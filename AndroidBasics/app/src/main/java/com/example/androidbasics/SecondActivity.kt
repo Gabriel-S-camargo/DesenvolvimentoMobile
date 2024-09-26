@@ -45,16 +45,17 @@ class SecondActivity : AppCompatActivity() {
                 carisma = carisma
             )
 
+            // Adicionar Exibição Bonus Racial
+
             Log.d("SecondActivity", "Personagem criado: $personagem")
 
             // Exibe as informações do personagem na tela com tema Material
             setContent {
                 MaterialTheme {
                     PersonagemCriadoScreen(personagem, onBackClick = {
-                        // Inicia a MainActivity quando o botão é clicado
                         val intent = Intent(this@SecondActivity, MainActivity::class.java)
                         startActivity(intent)
-                        finish() // Opcional: Fecha a SecondActivity após iniciar a MainActivity
+                        finish()
                     })
                 }
             }
