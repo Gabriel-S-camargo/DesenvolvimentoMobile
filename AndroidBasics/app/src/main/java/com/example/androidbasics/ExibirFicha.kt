@@ -18,7 +18,7 @@ import strategy.funcoes.criarPersonagem
 import android.util.Log
 import strategy.funcoes.racas
 
-class SecondActivity : AppCompatActivity() {
+class ExibirFicha : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,7 +45,14 @@ class SecondActivity : AppCompatActivity() {
                 carisma = carisma
             )
 
-
+            val atributosBonus : Map <String, Int> = mapOf(
+                "Força" to personagem.forca - forca ,
+                "Destreza" to personagem.destreza- destreza,
+                "Constituição" to personagem.constituicao - constituicao,
+                "Inteligência" to personagem.inteligencia - inteligencia,
+                "Sabedoria" to personagem.sabedoria - sabedoria,
+                "Carisma" to personagem.carisma - carisma
+            )
 
             Log.d("SecondActivity", "Personagem criado: $personagem")
 
@@ -53,10 +60,10 @@ class SecondActivity : AppCompatActivity() {
             setContent {
                 MaterialTheme {
                     PersonagemCriadoScreen(personagem, onBackClick = {
-                        val intent = Intent(this@SecondActivity, MainActivity::class.java)
+                        val intent = Intent(this@ExibirFicha, CriadorPersonagem::class.java)
                         startActivity(intent)
                         finish()
-                    })
+                    }, atributosBonus)
                 }
             }
         } catch (e: Exception) {
@@ -66,7 +73,7 @@ class SecondActivity : AppCompatActivity() {
 }
 
 @Composable
-fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit) {
+fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit, bonusRaca: Map<String, Int>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,17 +81,20 @@ fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
-        Text("Ficha do Seu Personagem", fontSize = 20.sp)
+        Text(
+            "Ficha do Seu Personagem",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Exibindo informações básicas
-        InfoRow(label = "Nome:", value = personagem.nome)
-        InfoRow(label = "Raça:", value = racas.entries.find { it.value == personagem.bonusRacial }?.key ?: "Desconhecida")
-        InfoRow(label = "Vida:", value = personagem.vida.toString())
-
-        //Verificar como exibir o Bonus Racial do meu personagem
-        //InfoRow(label = "Bonus Racial", value = )
+        // Informações básicas
+        InfoRow(label = "Nome:", value = personagem.nome, fontSize = 14)
+        InfoRow(
+            label = "Raça:",
+            value = racas.entries.find { it.value == personagem.bonusRacial }?.key ?: "Desconhecida",
+            fontSize = 14
+        )
+        InfoRow(label = "Vida:", value = personagem.vida.toString(), fontSize = 14)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -95,12 +105,13 @@ fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit) {
                 .padding(vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Atributo", modifier = Modifier.weight(1f))
-            Text("Nível", modifier = Modifier.weight(1f))
-            Text("Modificador", modifier = Modifier.weight(1f))
+            Text("Atributo", modifier = Modifier.weight(1f), fontSize = 14.sp)
+            Text("Nível", modifier = Modifier.weight(1f), fontSize = 14.sp)
+            Text("Modificador", modifier = Modifier.weight(1f), fontSize = 14.sp)
+            Text("Bônus Racial", modifier = Modifier.weight(1f), fontSize = 14.sp)
         }
 
-        // Exibindo Atributos e Modificadores em formato de ficha
+        // Exibindo os atributos e modificadores
         listOf(
             "Força" to personagem.forca,
             "Destreza" to personagem.destreza,
@@ -112,47 +123,50 @@ fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit) {
             AttributeRow(
                 label = "$atributo:",
                 nivel = valor.toString(),
-                modificador = personagem.calculaModificador(valor).toString()
+                modificador = personagem.calculaModificador(valor).toString(),
+                bonusRaca = bonusRaca.getValue(atributo).toString()
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botão para voltar à MainActivity
+        // Botão para voltar
         Button(
             onClick = onBackClick,
             modifier = Modifier.padding(top = 20.dp)
         ) {
-            Text("Voltar Para a Tela de Criação de Personagem")
+            Text("Voltar Para a Tela de Criação de Personagem", fontSize = 14.sp)
         }
     }
 }
 
 @Composable
-fun InfoRow(label: String, value: String) {
+fun InfoRow(label: String, value: String, fontSize: Int = 16) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, modifier = Modifier.weight(1f))
-        Text(text = value, modifier = Modifier.weight(2f))
+        Text(text = label, fontSize = fontSize.sp, modifier = Modifier.weight(1f))
+        Text(text = value, fontSize = fontSize.sp, modifier = Modifier.weight(2f))
     }
 }
 
 @Composable
-fun AttributeRow(label: String, nivel: String, modificador: String) {
+fun AttributeRow(label: String, nivel: String, modificador: String, bonusRaca: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, modifier = Modifier.weight(1f))
-        Text(text = nivel, modifier = Modifier.weight(1f))
-        Text(text = modificador, modifier = Modifier.weight(1f))
+        Text(text = label, modifier = Modifier.weight(1f), fontSize = 14.sp)
+        Text(text = nivel, modifier = Modifier.weight(1f), fontSize = 14.sp)
+        Text(text = modificador, modifier = Modifier.weight(1f), fontSize = 14.sp)
+        Text(text = bonusRaca, modifier = Modifier.weight(1f), fontSize = 14.sp)
     }
 }
+
 
 
