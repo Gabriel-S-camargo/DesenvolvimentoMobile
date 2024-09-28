@@ -15,9 +15,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import strategy.funcoes.*
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
 
 class CriadorPersonagem : ComponentActivity() {
@@ -54,155 +58,171 @@ fun CharacterFormScreen() {
 
     val context = LocalContext.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            "Criador de Personagem Dungeons And Dragons",
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Text("Pontos Disponíveis: $remainingPoints")
-
-        // Campo para a seleção da raça
-        RaceDropdown(
-            selectedRace = selectedRace,
-            onRaceSelected = { selectedRace = it },
-            races = races
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.backgroundapp),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
 
-        OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
-            label = { Text("Nome do Personagem") }
-        )
-
-        // Campos para os atributos (Força, Destreza, Constituição, etc.)
-        AtributoInput("Força", strength, remainingPoints) { newStrength ->
-            strength = newStrength
-            remainingPoints = calcularPontosRestantes(
-                listOf(
-                    strength,
-                    dexterity,
-                    constitution,
-                    intelligence,
-                    wisdom,
-                    charisma
-                )
-            )
-        }
-        AtributoInput("Destreza", dexterity, remainingPoints) { newDexterity ->
-            dexterity = newDexterity
-            remainingPoints = calcularPontosRestantes(
-                listOf(
-                    strength,
-                    dexterity,
-                    constitution,
-                    intelligence,
-                    wisdom,
-                    charisma
-                )
-            )
-        }
-        AtributoInput("Constituição", constitution, remainingPoints) { newConstitution ->
-            constitution = newConstitution
-            remainingPoints = calcularPontosRestantes(
-                listOf(
-                    strength,
-                    dexterity,
-                    constitution,
-                    intelligence,
-                    wisdom,
-                    charisma
-                )
-            )
-        }
-        AtributoInput("Inteligência", intelligence, remainingPoints) { newIntelligence ->
-            intelligence = newIntelligence
-            remainingPoints = calcularPontosRestantes(
-                listOf(
-                    strength,
-                    dexterity,
-                    constitution,
-                    intelligence,
-                    wisdom,
-                    charisma
-                )
-            )
-        }
-        AtributoInput("Sabedoria", wisdom, remainingPoints) { newWisdom ->
-            wisdom = newWisdom
-            remainingPoints = calcularPontosRestantes(
-                listOf(
-                    strength,
-                    dexterity,
-                    constitution,
-                    intelligence,
-                    wisdom,
-                    charisma
-                )
-            )
-        }
-        AtributoInput("Carisma", charisma, remainingPoints) { newCharisma ->
-            charisma = newCharisma
-            remainingPoints = calcularPontosRestantes(
-                listOf(
-                    strength,
-                    dexterity,
-                    constitution,
-                    intelligence,
-                    wisdom,
-                    charisma
-                )
-            )
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Button(onClick = {
-                try {
-                    val intent = Intent(context, ExibirFicha::class.java).apply {
-                        putExtra("nome", name)
-                        putExtra("raca", selectedRace)
-                        putExtra("forca", strength.toInt())
-                        putExtra("destreza", dexterity.toInt())
-                        putExtra("constituicao", constitution.toInt())
-                        putExtra("inteligencia", intelligence.toInt())
-                        putExtra("sabedoria", wisdom.toInt())
-                        putExtra("carisma", charisma.toInt())
-                    }
-                    Log.d(
-                        "MainActivity",
-                        "Intent created successfully with: Nome=$name, Raça=$selectedRace"
+            Text(
+                "Criador de Personagem Dungeons And Dragons",
+                style = MaterialTheme.typography.headlineMedium,
+                color = androidx.compose.ui.graphics.Color.White
+            )
+            Text("Pontos Disponíveis: $remainingPoints",
+                color = androidx.compose.ui.graphics.Color.White)
+
+            // Campo para a seleção da raça
+            RaceDropdown(
+                selectedRace = selectedRace,
+                onRaceSelected = { selectedRace = it },
+                races = races
+            )
+
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Nome do Personagem") }
+            )
+
+            // Campos para os atributos (Força, Destreza, Constituição, etc.)
+            AtributoInput("Força", strength, remainingPoints) { newStrength ->
+                strength = newStrength
+                remainingPoints = calcularPontosRestantes(
+                    listOf(
+                        strength,
+                        dexterity,
+                        constitution,
+                        intelligence,
+                        wisdom,
+                        charisma
                     )
-                    context.startActivity(intent)
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Error creating intent: ${e.message}")
+                )
+            }
+            AtributoInput("Destreza", dexterity, remainingPoints) { newDexterity ->
+                dexterity = newDexterity
+                remainingPoints = calcularPontosRestantes(
+                    listOf(
+                        strength,
+                        dexterity,
+                        constitution,
+                        intelligence,
+                        wisdom,
+                        charisma
+                    )
+                )
+            }
+            AtributoInput("Constituição", constitution, remainingPoints) { newConstitution ->
+                constitution = newConstitution
+                remainingPoints = calcularPontosRestantes(
+                    listOf(
+                        strength,
+                        dexterity,
+                        constitution,
+                        intelligence,
+                        wisdom,
+                        charisma
+                    )
+                )
+            }
+            AtributoInput("Inteligência", intelligence, remainingPoints) { newIntelligence ->
+                intelligence = newIntelligence
+                remainingPoints = calcularPontosRestantes(
+                    listOf(
+                        strength,
+                        dexterity,
+                        constitution,
+                        intelligence,
+                        wisdom,
+                        charisma
+                    )
+                )
+            }
+            AtributoInput("Sabedoria", wisdom, remainingPoints) { newWisdom ->
+                wisdom = newWisdom
+                remainingPoints = calcularPontosRestantes(
+                    listOf(
+                        strength,
+                        dexterity,
+                        constitution,
+                        intelligence,
+                        wisdom,
+                        charisma
+                    )
+                )
+            }
+            AtributoInput("Carisma", charisma, remainingPoints) { newCharisma ->
+                charisma = newCharisma
+                remainingPoints = calcularPontosRestantes(
+                    listOf(
+                        strength,
+                        dexterity,
+                        constitution,
+                        intelligence,
+                        wisdom,
+                        charisma
+                    )
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(onClick = {
+                    try {
+                        val intent = Intent(context, ExibirFicha::class.java).apply {
+                            putExtra("nome", name)
+                            putExtra("raca", selectedRace)
+                            putExtra("forca", strength.toInt())
+                            putExtra("destreza", dexterity.toInt())
+                            putExtra("constituicao", constitution.toInt())
+                            putExtra("inteligencia", intelligence.toInt())
+                            putExtra("sabedoria", wisdom.toInt())
+                            putExtra("carisma", charisma.toInt())
+                        }
+                        Log.d(
+                            "MainActivity",
+                            "Intent created successfully with: Nome=$name, Raça=$selectedRace"
+                        )
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        Log.e("MainActivity", "Error creating intent: ${e.message}")
+                    }
+                }) {
+                    Text("Criar Personagem")
                 }
-            }) {
-                Text("Criar Personagem")
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+
+                Button(onClick = {
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+                })
+                {
+                    Text("Voltar ao Menu")
+                }
             }
         }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
 
-            Button(onClick = {
-                val intent = Intent(context, MainActivity::class.java)
-                context.startActivity(intent)
-            })
-            {
-                Text("Voltar ao Menu")
-            }
-        }
+
     }
+
+
 }
 
 
