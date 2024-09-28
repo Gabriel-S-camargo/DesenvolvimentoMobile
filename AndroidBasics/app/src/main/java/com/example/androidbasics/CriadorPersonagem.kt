@@ -15,6 +15,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import strategy.funcoes.*
 import android.util.Log
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.lifecycle.ViewModel
 
 class CriadorPersonagem : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,15 +31,19 @@ class CriadorPersonagem : ComponentActivity() {
 
 @Composable
 fun CharacterFormScreen() {
-    var name by remember { mutableStateOf("") }
-    var strength by remember { mutableStateOf("8") }
-    var dexterity by remember { mutableStateOf("8") }
-    var constitution by remember { mutableStateOf("8") }
-    var intelligence by remember { mutableStateOf("8") }
-    var wisdom by remember { mutableStateOf("8") }
-    var charisma by remember { mutableStateOf("8") }
-    var selectedRace by remember { mutableStateOf("Alto Elfo") }
-    var remainingPoints by remember { mutableStateOf(27) }
+    var name by rememberSaveable { mutableStateOf("") }
+    var strength by rememberSaveable { mutableStateOf("8") }
+    var dexterity by rememberSaveable { mutableStateOf("8") }
+    var constitution by rememberSaveable { mutableStateOf("8") }
+    var intelligence by rememberSaveable { mutableStateOf("8") }
+    var wisdom by rememberSaveable { mutableStateOf("8") }
+    var charisma by rememberSaveable { mutableStateOf("8") }
+    var selectedRace by rememberSaveable { mutableStateOf("Alto Elfo") }
+    var remainingPoints by rememberSaveable { mutableStateOf(27) }
+
+    // Esse cara aqui serve para poder lembrar a Orientação do Dispositivo e
+    // permitir a rolagem
+    val scrollState = rememberScrollState()
 
     val races = listOf(
         "Alto elfo", "Anão", "Anão da Montanha", "Anão da Colina", "Drow", "Draconato",
@@ -49,7 +57,8 @@ fun CharacterFormScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(

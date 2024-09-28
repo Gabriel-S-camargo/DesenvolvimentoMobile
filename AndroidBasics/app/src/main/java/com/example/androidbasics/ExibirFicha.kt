@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.sp
 import strategy.funcoes.converterStringParaBonusRacial
 import strategy.funcoes.criarPersonagem
 import android.util.Log
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import strategy.funcoes.racas
 
 class ExibirFicha : AppCompatActivity() {
@@ -74,10 +76,13 @@ class ExibirFicha : AppCompatActivity() {
 
 @Composable
 fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit, bonusRaca: Map<String, Int>) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
