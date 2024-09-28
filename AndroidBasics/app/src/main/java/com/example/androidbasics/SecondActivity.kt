@@ -45,7 +45,7 @@ class SecondActivity : AppCompatActivity() {
                 carisma = carisma
             )
 
-            // Adicionar Exibição Bonus Racial
+
 
             Log.d("SecondActivity", "Personagem criado: $personagem")
 
@@ -82,6 +82,9 @@ fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit) {
         InfoRow(label = "Nome:", value = personagem.nome)
         InfoRow(label = "Raça:", value = racas.entries.find { it.value == personagem.bonusRacial }?.key ?: "Desconhecida")
         InfoRow(label = "Vida:", value = personagem.vida.toString())
+
+        //Verificar como exibir o Bonus Racial do meu personagem
+        //InfoRow(label = "Bonus Racial", value = )
 
         Spacer(modifier = Modifier.height(16.dp))
 
