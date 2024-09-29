@@ -16,12 +16,17 @@ import androidx.compose.ui.unit.dp
 import strategy.funcoes.*
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 
 class CriadorPersonagem : ComponentActivity() {
@@ -69,8 +74,7 @@ fun CharacterFormScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(scrollState),
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
@@ -79,19 +83,33 @@ fun CharacterFormScreen() {
                 color = androidx.compose.ui.graphics.Color.White
             )
             Text("Pontos Disponíveis: $remainingPoints",
+                fontSize = 24.sp,
                 color = androidx.compose.ui.graphics.Color.White)
+
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Nome do Personagem") },
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedTextColor = Color.White,
+                    unfocusedBorderColor = Color.White,
+                    unfocusedLabelColor = Color.White,
+                    unfocusedLeadingIconColor = Color.White,
+                    focusedTextColor = Color.White,
+                    focusedBorderColor = Color.White,
+                    focusedLabelColor = Color.White,
+                    focusedLeadingIconColor = Color.White,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            )
 
             // Campo para a seleção da raça
             RaceDropdown(
                 selectedRace = selectedRace,
                 onRaceSelected = { selectedRace = it },
                 races = races
-            )
-
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Nome do Personagem") }
             )
 
             // Campos para os atributos (Força, Destreza, Constituição, etc.)
@@ -198,22 +216,32 @@ fun CharacterFormScreen() {
                     } catch (e: Exception) {
                         Log.e("MainActivity", "Error creating intent: ${e.message}")
                     }
-                }) {
-                    Text("Criar Personagem")
+
+                },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.White
+                    )
+                ) {
+                    Text("Criar Personagem", color = Color.Black)
                 }
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
 
                 Button(onClick = {
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
-                })
+                },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent
+
+                    )
+                )
                 {
-                    Text("Voltar ao Menu")
+                    Text("Voltar ao Menu", color = Color.White)
                 }
             }
         }
@@ -241,15 +269,28 @@ fun AtributoInput(
             onValueChange = { },
             label = { Text(label) },
             readOnly = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = Color.White,
+                unfocusedBorderColor = Color.White,
+                unfocusedLabelColor = Color.White,
+                unfocusedLeadingIconColor = Color.White,
+                focusedTextColor = Color.White,
+                focusedBorderColor = Color.White,
+                focusedLabelColor = Color.White,
+                focusedLeadingIconColor = Color.White
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { expanded = !expanded }
+                .padding(horizontal = 20.dp)
         )
         if (expanded) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp) // Limita a altura do dropdown
+                    .heightIn(max = 200.dp) // Limita a altura do dropdown
+                    .background(Color.White),
+
             ) {
                 items(attributeValues) { attribute ->
                     val cost = calcularCustoAtributo(attribute.toInt())
@@ -285,23 +326,36 @@ fun AtributoInput(
 fun RaceDropdown(selectedRace: String, onRaceSelected: (String) -> Unit, races: List<String>) {
     var expanded by remember { mutableStateOf(false) }
 
-    Column {
+    Column(
+        modifier = Modifier
+    ) {
         OutlinedTextField(
             value = selectedRace,
             onValueChange = { /* Campo somente de leitura */ },
             label = { Text("Raça do Personagem") },
             readOnly = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = Color.White,
+                unfocusedBorderColor = Color.White,
+                unfocusedLabelColor = Color.White,
+                unfocusedLeadingIconColor = Color.White,
+                focusedTextColor = Color.White,
+                focusedBorderColor = Color.White,
+                focusedLabelColor = Color.White,
+                focusedLeadingIconColor = Color.White,
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { expanded = !expanded }
+                .padding(horizontal = 20.dp)
         )
-
-
         if (expanded) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
+                    .background(Color.White)
+                    .padding(horizontal = 20.dp)
             ) {
                 items(races) { race ->
                     Text(
@@ -312,13 +366,14 @@ fun RaceDropdown(selectedRace: String, onRaceSelected: (String) -> Unit, races: 
                             .clickable {
                                 onRaceSelected(race)
                                 expanded = false
-                            }
+                            },
                     )
                 }
             }
         }
     }
 }
+
 
 
 
