@@ -16,13 +16,27 @@ import androidx.compose.ui.unit.sp
 import strategy.funcoes.converterStringParaBonusRacial
 import strategy.funcoes.criarPersonagem
 import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.lifecycleScope
+import com.example.androidbasics.data.conversores.toEntity
+import com.example.androidbasics.data.database.AppDatabase
+import kotlinx.coroutines.launch
 import strategy.funcoes.racas
 
 class ExibirFicha : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         try {
             // Recupera os dados do Intent
@@ -69,7 +83,7 @@ class ExibirFicha : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            Log.e("SecondActivity", "Error creating Personagem: ${e.message}")
+            Log.e("ExibirFicha", "Error creating Personagem: ${e.message}")
         }
     }
 }
@@ -78,71 +92,107 @@ class ExibirFicha : AppCompatActivity() {
 fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit, bonusRaca: Map<String, Int>) {
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
-    ) {
-        Text(
-            "Ficha do Seu Personagem",
-            fontSize = 18.sp,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+    // aqui chamamos a DAO(data acess object) e conectamos com o BD pelo remember
+    val context = LocalContext.current
+    val db = remember { AppDatabase.getDatabase(context) }
+    val personagemDao = db.personagemDao()
 
-        // Informações básicas
-        InfoRow(label = "Nome:", value = personagem.nome, fontSize = 14)
-        InfoRow(
-            label = "Raça:",
-            value = racas.entries.find { it.value == personagem.bonusRacial }?.key ?: "Desconhecida",
-            fontSize = 14
-        )
-        InfoRow(label = "Vida:", value = personagem.vida.toString(), fontSize = 14)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Cabeçalho para Atributos e Modificadores
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text("Atributo", modifier = Modifier.weight(1f), fontSize = 14.sp)
-            Text("Nível", modifier = Modifier.weight(1f), fontSize = 14.sp)
-            Text("Modificador", modifier = Modifier.weight(1f), fontSize = 14.sp)
-            Text("Bônus Racial", modifier = Modifier.weight(1f), fontSize = 14.sp)
-        }
-
-        // Exibindo os atributos e modificadores
-        listOf(
-            "Força" to personagem.forca,
-            "Destreza" to personagem.destreza,
-            "Constituição" to personagem.constituicao,
-            "Inteligência" to personagem.inteligencia,
-            "Sabedoria" to personagem.sabedoria,
-            "Carisma" to personagem.carisma
-        ).forEach { (atributo, valor) ->
-            AttributeRow(
-                label = "$atributo:",
-                nivel = valor.toString(),
-                modificador = personagem.calculaModificador(valor).toString(),
-                bonusRaca = bonusRaca.getValue(atributo).toString()
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Botão para voltar
-        Button(
-            onClick = onBackClick,
-            modifier = Modifier.padding(top = 20.dp)
-        ) {
-            Text("Voltar Para a Tela de Criação de Personagem", fontSize = 14.sp)
+    fun salvarPersonagem(personagem: Personagem) {
+        (context as ComponentActivity).lifecycleScope.launch {
+            val personagemEntity = personagem.toEntity()
+            personagemDao.inserir(personagemEntity)
         }
     }
+
+    try{
+        salvarPersonagem(personagem)
+        Log.e("ExibirFicha", "Personagem Inserido com sucesso!!")
+    }catch (e: Exception){
+        Log.e("ExibirFicha", "Erro de inserção: ${e.message}")
+    }
+
+
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.backgroundapp),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+        ) {
+            Text(
+                "Ficha do Seu Personagem",
+                fontSize = 18.sp,
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = Color.White
+            )
+
+            // Informações básicas
+            InfoRow(label = "Nome:", value = personagem.nome, fontSize = 14)
+            InfoRow(
+                label = "Raça:",
+                value = racas.entries.find { it.value == personagem.bonusRacial }?.key ?: "Desconhecida",
+                fontSize = 14
+            )
+            InfoRow(label = "Vida:", value = personagem.vida.toString(), fontSize = 14)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Cabeçalho para Atributos e Modificadores
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Atributo", modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color.White)
+                Text("Nível", modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color.White)
+                Text("Modificador", modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color.White)
+                Text("Bônus Racial", modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color.White)
+            }
+
+            // Exibindo os atributos e modificadores
+            listOf(
+                "Força" to personagem.forca,
+                "Destreza" to personagem.destreza,
+                "Constituição" to personagem.constituicao,
+                "Inteligência" to personagem.inteligencia,
+                "Sabedoria" to personagem.sabedoria,
+                "Carisma" to personagem.carisma
+            ).forEach { (atributo, valor) ->
+                AttributeRow(
+                    label = "$atributo:",
+                    nivel = valor.toString(),
+                    modificador = personagem.calculaModificador(valor).toString(),
+                    bonusRaca = bonusRaca.getValue(atributo).toString()
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botão para voltar
+            Button(
+                onClick = onBackClick,
+                modifier = Modifier.padding(top = 20.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                )
+            ) {
+                Text("Voltar Para a Tela de Criação de Personagem", fontSize = 14.sp, color = Color.Black)
+            }
+        }
+    }
+
+
 }
 
 @Composable
@@ -153,8 +203,8 @@ fun InfoRow(label: String, value: String, fontSize: Int = 16) {
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, fontSize = fontSize.sp, modifier = Modifier.weight(1f))
-        Text(text = value, fontSize = fontSize.sp, modifier = Modifier.weight(2f))
+        Text(text = label, fontSize = fontSize.sp, modifier = Modifier.weight(1f), color = Color.White)
+        Text(text = value, fontSize = fontSize.sp, modifier = Modifier.weight(2f), color = Color.White)
     }
 }
 
@@ -166,10 +216,10 @@ fun AttributeRow(label: String, nivel: String, modificador: String, bonusRaca: S
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, modifier = Modifier.weight(1f), fontSize = 14.sp)
-        Text(text = nivel, modifier = Modifier.weight(1f), fontSize = 14.sp)
-        Text(text = modificador, modifier = Modifier.weight(1f), fontSize = 14.sp)
-        Text(text = bonusRaca, modifier = Modifier.weight(1f), fontSize = 14.sp)
+        Text(text = label, modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color.White)
+        Text(text = nivel, modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color.White)
+        Text(text = modificador, modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color.White)
+        Text(text = bonusRaca, modifier = Modifier.weight(1f), fontSize = 14.sp, color = Color.White)
     }
 }
 

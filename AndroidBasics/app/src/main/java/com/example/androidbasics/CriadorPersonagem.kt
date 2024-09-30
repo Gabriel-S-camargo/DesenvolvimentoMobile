@@ -17,17 +17,11 @@ import strategy.funcoes.*
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalMapOf
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 
 class CriadorPersonagem : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,11 +42,11 @@ fun CharacterFormScreen() {
     var wisdom by rememberSaveable { mutableStateOf("8") }
     var charisma by rememberSaveable { mutableStateOf("8") }
     var selectedRace by rememberSaveable { mutableStateOf("Alto Elfo") }
-    var remainingPoints by rememberSaveable { mutableStateOf(27) }
+    var remainingPoints by rememberSaveable { mutableIntStateOf(27) }
 
     // Esse cara aqui serve para poder lembrar a Orientação do Dispositivo e
     // permitir a rolagem
-    val scrollState = rememberScrollState()
+    //val scrollState = rememberScrollState()
 
     val races = listOf(
         "Alto elfo", "Anão", "Anão da Montanha", "Anão da Colina", "Drow", "Draconato",
