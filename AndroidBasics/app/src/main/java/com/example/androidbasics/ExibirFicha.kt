@@ -92,24 +92,24 @@ class ExibirFicha : AppCompatActivity() {
 fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit, bonusRaca: Map<String, Int>) {
     val scrollState = rememberScrollState()
 
-//    // aqui chamamos a DAO(data acess object) e conectamos com o BD pelo remember
-//    val context = LocalContext.current
-//    val db = remember { AppDatabase.getDatabase(context) }
-//    val personagemDao = db.personagemDao()
-//
-//    fun salvarPersonagem(personagem: Personagem) {
-//        (context as ComponentActivity).lifecycleScope.launch {
-//            val personagemEntity = personagem.toEntity()
-//            personagemDao.inserir(personagemEntity)
-//        }
-//    }
-//
-//    try{
-//        salvarPersonagem(personagem)
-//        Log.e("ExibirFicha", "Personagem Inserido com sucesso!!")
-//    }catch (e: Exception){
-//        Log.e("ExibirFicha", "Erro de inserção: ${e.message}")
-//    }
+    // aqui chamamos a DAO(data acess object) e conectamos com o BD pelo remember
+    val context = LocalContext.current
+    val db = remember { AppDatabase.getDatabase(context) }
+    val personagemDao = db.personagemDao()
+
+    fun salvarPersonagem(personagem: Personagem) {
+        (context as ComponentActivity).lifecycleScope.launch {
+            val personagemEntity = personagem.toEntity()
+            personagemDao.inserir(personagemEntity)
+        }
+    }
+
+    try{
+        salvarPersonagem(personagem)
+        Log.e("ExibirFicha", "Personagem Inserido com sucesso!!")
+    }catch (e: Exception){
+        Log.e("ExibirFicha", "Erro de inserção: ${e.message}")
+    }
 
 
 
