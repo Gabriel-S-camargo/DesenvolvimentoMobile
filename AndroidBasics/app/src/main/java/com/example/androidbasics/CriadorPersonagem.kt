@@ -78,11 +78,11 @@ fun CharacterFormScreen() {
             Text(
                 "Criador de Personagem Dungeons And Dragons",
                 style = MaterialTheme.typography.headlineMedium,
-                color = androidx.compose.ui.graphics.Color.White
+                color = Color.White
             )
             Text("Pontos Disponíveis: $remainingPoints",
                 fontSize = 24.sp,
-                color = androidx.compose.ui.graphics.Color.White)
+                color = Color.White)
 
             OutlinedTextField(
                 value = name,
