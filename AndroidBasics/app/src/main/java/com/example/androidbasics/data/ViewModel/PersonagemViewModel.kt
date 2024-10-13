@@ -1,4 +1,4 @@
-package com.example.androidbasics.ViewModel
+package com.example.androidbasics.data.ViewModel
 
 import Personagem
 import android.app.Application

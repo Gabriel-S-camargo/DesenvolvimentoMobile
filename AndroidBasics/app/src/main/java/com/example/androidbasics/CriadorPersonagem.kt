@@ -17,11 +17,14 @@ import strategy.funcoes.*
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 
@@ -59,6 +62,9 @@ fun CharacterFormScreen() {
 
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -72,7 +78,9 @@ fun CharacterFormScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .verticalScroll(scrollState),
+                .then(
+                    if (isLandscape) Modifier.verticalScroll(scrollState) else Modifier
+                ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(

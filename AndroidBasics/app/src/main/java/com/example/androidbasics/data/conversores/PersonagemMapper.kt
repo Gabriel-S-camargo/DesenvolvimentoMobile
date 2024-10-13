@@ -11,7 +11,7 @@ fun Personagem.toEntity(): PersonagemEntity {
         nome = this.nome,
         pontosDisponiveis = this.pontosDisponiveis,
         // assim posso pegar a Key do meu HashMap Racas, pegando a raca a partir do Bonus Racial
-        raca = racas.filterValues { it == this.bonusRacial }.keys.toString(),
+        raca = racas.filterValues { it == this.bonusRacial }.keys.toString().filterNot { it == '[' || it == ']' },
         forca = this.forca,
         destreza = this.destreza,
         constituicao = this.constituicao,
