@@ -63,7 +63,8 @@ fun CharacterFormScreen() {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+    val isLandscape =
+        configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -88,9 +89,11 @@ fun CharacterFormScreen() {
                 style = MaterialTheme.typography.headlineMedium,
                 color = Color.White
             )
-            Text("Pontos Disponíveis: $remainingPoints",
+            Text(
+                "Pontos Disponíveis: $remainingPoints",
                 fontSize = 24.sp,
-                color = Color.White)
+                color = Color.White
+            )
 
             OutlinedTextField(
                 value = name,
@@ -202,28 +205,29 @@ fun CharacterFormScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = {
-                    try {
-                        val intent = Intent(context, ExibirFicha::class.java).apply {
-                            putExtra("nome", name)
-                            putExtra("raca", selectedRace)
-                            putExtra("forca", strength.toInt())
-                            putExtra("destreza", dexterity.toInt())
-                            putExtra("constituicao", constitution.toInt())
-                            putExtra("inteligencia", intelligence.toInt())
-                            putExtra("sabedoria", wisdom.toInt())
-                            putExtra("carisma", charisma.toInt())
+                Button(
+                    onClick = {
+                        try {
+                            val intent = Intent(context, ExibirFicha::class.java).apply {
+                                putExtra("nome", name)
+                                putExtra("raca", selectedRace)
+                                putExtra("forca", strength.toInt())
+                                putExtra("destreza", dexterity.toInt())
+                                putExtra("constituicao", constitution.toInt())
+                                putExtra("inteligencia", intelligence.toInt())
+                                putExtra("sabedoria", wisdom.toInt())
+                                putExtra("carisma", charisma.toInt())
+                            }
+                            Log.d(
+                                "MainActivity",
+                                "Intent created successfully with: Nome=$name, Raça=$selectedRace"
+                            )
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            Log.e("MainActivity", "Error creating intent: ${e.message}")
                         }
-                        Log.d(
-                            "MainActivity",
-                            "Intent created successfully with: Nome=$name, Raça=$selectedRace"
-                        )
-                        context.startActivity(intent)
-                    } catch (e: Exception) {
-                        Log.e("MainActivity", "Error creating intent: ${e.message}")
-                    }
 
-                },
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White
                     )
@@ -237,10 +241,11 @@ fun CharacterFormScreen() {
                     .fillMaxWidth()
             ) {
 
-                Button(onClick = {
-                    val intent = Intent(context, MainActivity::class.java)
-                    context.startActivity(intent)
-                },
+                Button(
+                    onClick = {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent
 
@@ -251,7 +256,6 @@ fun CharacterFormScreen() {
                 }
             }
         }
-
 
 
     }
@@ -297,7 +301,7 @@ fun AtributoInput(
                     .heightIn(max = 200.dp) // Limita a altura do dropdown
                     .background(Color.White),
 
-            ) {
+                ) {
                 items(attributeValues) { attribute ->
                     val cost = calcularCustoAtributo(attribute.toInt())
 
