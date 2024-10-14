@@ -1,5 +1,6 @@
 package com.example.androidbasics
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,28 +25,25 @@ import com.example.androidbasics.data.entities.PersonagemEntity
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import com.example.androidbasics.data.ViewModel.PersonagemViewModel
 
 class ListarPersonagens : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TelaPersonagens()
+
+            val vieModel = PersonagemViewModel(application)
+
+            TelaPersonagens(vieModel)
         }
     }
 
     @Composable
-    fun TelaPersonagens() {
+    fun TelaPersonagens(viewModel: PersonagemViewModel) {
         val context = LocalContext.current
-        val db = remember { AppDatabase.getDatabase(context) }
-        val personagemDao = db.personagemDao()
-        var personagens by remember { mutableStateOf(emptyList<PersonagemEntity>()) }
+        val personagens by viewModel.personagens.observeAsState(emptyList())
+
         val scrollState = rememberScrollState()
-
-
-        // Carrega os personagens do banco de dados
-        LaunchedEffect(Unit) {
-            personagens = personagemDao.buscarTodos()
-        }
 
         Box(modifier = Modifier.fillMaxSize()) {
 
@@ -67,18 +66,16 @@ class ListarPersonagens : ComponentActivity() {
                     color = Color.White
                 )
 
-                // Verifica se há personagens no banco de dados
                 if (personagens.isEmpty()) {
-                    Text(text = "Nenhum personagem encontrado.", color = Color.White)
+                    Text(
+                        text = "Nenhum personagem encontrado.", color = Color.White
+                    )
                 } else {
-                    // Exibe a lista de personagens
                     personagens.forEach { personagem ->
                         ExibirPersonagem(personagem)
                     }
                 }
             }
-
-
         }
 
         Row(
@@ -86,7 +83,6 @@ class ListarPersonagens : ComponentActivity() {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-
             Button(
                 onClick = {
                     val intent = Intent(context, MainActivity::class.java)
@@ -94,10 +90,8 @@ class ListarPersonagens : ComponentActivity() {
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent
-
                 )
-            )
-            {
+            ) {
                 Text("Voltar ao Menu", color = Color.White)
             }
         }

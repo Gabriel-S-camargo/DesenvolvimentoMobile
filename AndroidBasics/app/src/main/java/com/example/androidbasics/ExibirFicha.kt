@@ -1,6 +1,7 @@
 package com.example.androidbasics
 
 import Personagem
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -27,6 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.lifecycleScope
+import com.example.androidbasics.data.ViewModel.PersonagemViewModel
 import com.example.androidbasics.data.conversores.toEntity
 import com.example.androidbasics.data.database.AppDatabase
 import kotlinx.coroutines.launch
@@ -92,16 +94,16 @@ class ExibirFicha : AppCompatActivity() {
 fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit, bonusRaca: Map<String, Int>) {
     val scrollState = rememberScrollState()
 
-    // aqui chamamos a DAO(data acess object) e conectamos com o BD pelo remember
     val context = LocalContext.current
-    val db = remember { AppDatabase.getDatabase(context) }
-    val personagemDao = db.personagemDao()
 
-    fun salvarPersonagem(personagem: Personagem) {
-        (context as ComponentActivity).lifecycleScope.launch {
-            val personagemEntity = personagem.toEntity()
-            personagemDao.inserir(personagemEntity)
-        }
+    // acessa a viewModel para poder inserir o personagem
+    fun salvarPersonagem(personagem: Personagem){
+
+        val application = context.applicationContext as Application
+
+        val viewModel = PersonagemViewModel(application)
+
+        viewModel.inserirPersonagem(personagem)
     }
 
     try{
