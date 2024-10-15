@@ -97,23 +97,22 @@ fun PersonagemCriadoScreen(personagem: Personagem, onBackClick: () -> Unit, bonu
     val context = LocalContext.current
 
     // acessa a viewModel para poder inserir o personagem
-    fun salvarPersonagem(personagem: Personagem){
+
+    try{
 
         val application = context.applicationContext as Application
 
         val viewModel = PersonagemViewModel(application)
 
         viewModel.inserirPersonagem(personagem)
-    }
 
-    try{
-        salvarPersonagem(personagem)
         Log.e("ExibirFicha", "Personagem Inserido com sucesso!!")
+
     }catch (e: Exception){
+
         Log.e("ExibirFicha", "Erro de inserção: ${e.message}")
+
     }
-
-
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
