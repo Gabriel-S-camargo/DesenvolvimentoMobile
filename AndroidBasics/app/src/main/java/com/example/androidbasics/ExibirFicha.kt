@@ -26,6 +26,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.androidbasics.data.ViewModel.PersonagemViewModel
+import com.example.androidbasics.data.conversores.toEntity
 import com.example.androidbasics.data.conversores.toPersonagem
 import strategy.funcoes.racas
 
@@ -38,9 +39,11 @@ class ExibirFicha : AppCompatActivity() {
 
 
         if (fromActivity == "ListarPersonagens") {
+
+            Log.e("ExibirFicha", "Origem ListarPersonagem")
+
             // Obtém o ID passado pela Intent
             val id = intent.getIntExtra("id", 0)
-            val nome = intent.getStringExtra("nome") ?: "Desconhecido"
             val raca = intent.getStringExtra("raca") ?: "Desconhecida"
             val forca = intent.getIntExtra("forca", 8)
             val destreza = intent.getIntExtra("destreza", 8)
@@ -50,7 +53,6 @@ class ExibirFicha : AppCompatActivity() {
             val carisma = intent.getIntExtra("carisma", 8)
             val viewModel = PersonagemViewModel(application)
 
-            // Observa o LiveData para buscar o personagem por ID
             viewModel.buscarPersonagemPorId(id).observe(this) { personagemEntity ->
                 // Verifica se o personagem foi encontrado
                 personagemEntity?.let { entity ->
@@ -87,7 +89,9 @@ class ExibirFicha : AppCompatActivity() {
             }
         }
 
-        if (fromActivity == "CriadorPersongem") {
+        if (fromActivity == "CriadorPersonagem") {
+            Log.e("ExibirFicha", "Origem CriadorDePersonagem")
+
             // Recupera os dados do Intent
             val nome = intent.getStringExtra("nome") ?: "Desconhecido"
             val raca = intent.getStringExtra("raca") ?: "Desconhecida"
@@ -136,6 +140,73 @@ class ExibirFicha : AppCompatActivity() {
                 }
             }
         }
+
+        if(fromActivity == "ListarPersonagemOrigin"){
+
+            Log.e("ExibirFicha", "Origem ListarPersonagemOrigin")
+
+            // Obtém o ID passado pela Intent
+            val id = intent.getIntExtra("id", 0)
+            val nome = intent.getStringExtra("nome") ?: "Desconhecido"
+            val raca = intent.getStringExtra("raca") ?: "desconhecida"
+            val forca = intent.getIntExtra("forca", 8)
+            val destreza = intent.getIntExtra("destreza", 8)
+            val constituicao = intent.getIntExtra("constituicao", 8)
+            val inteligencia = intent.getIntExtra("inteligencia", 8)
+            val sabedoria = intent.getIntExtra("sabedoria", 8)
+            val carisma = intent.getIntExtra("carisma", 8)
+            val viewModel = PersonagemViewModel(application)
+
+            // Cria o personagem usando os dados recebidos
+            val personagem = criarPersonagem(
+                nome = nome,
+                bonusRacial = converterStringParaBonusRacial(raca),
+                forca = forca,
+                destreza = destreza,
+                constituicao = constituicao,
+                inteligencia = inteligencia,
+                sabedoria = sabedoria,
+                carisma = carisma
+            )
+
+            val atributosBonus: Map<String, Int> = mapOf(
+                "Força" to personagem.forca - forca,
+                "Destreza" to personagem.destreza - destreza,
+                "Constituição" to personagem.constituicao - constituicao,
+                "Inteligência" to personagem.inteligencia - inteligencia,
+                "Sabedoria" to personagem.sabedoria - sabedoria,
+                "Carisma" to personagem.carisma - carisma
+            )
+
+            try {
+
+                val personagemEntity = personagem.toEntity()
+
+                personagemEntity.id = id
+
+                viewModel.atualizarPersonagem(personagemEntity)
+
+                Log.e("Exibir Ficha", "Atualizado")
+            }catch (e: Exception){
+                Log.e("ExibirFicha", "Erro de Atualizaçãp: ${e.message}")
+            }
+
+            setContent {
+                MaterialTheme {
+                    PersonagemCriadoScreen(
+                        personagem,
+                        onBackClick = {
+                            val intent =
+                                Intent(this@ExibirFicha, CriadorPersonagem::class.java)
+                            startActivity(intent)
+                            finish()
+                        },
+                        atributosBonus, fromActivity
+                    )
+                }
+            }
+
+        }
     }
 }
 
@@ -152,7 +223,7 @@ fun PersonagemCriadoScreen(
 
     // acessa a viewModel para poder inserir o personagem
 
-    if(activity != "ListarPersonagens"){
+    if(activity == "CriadorPersonagem"){
         try {
 
             val application = context.applicationContext as Application
@@ -227,12 +298,15 @@ fun PersonagemCriadoScreen(
                     fontSize = 14.sp,
                     color = Color.White
                 )
-                Text(
-                    "Bônus Racial",
-                    modifier = Modifier.weight(1f),
-                    fontSize = 14.sp,
-                    color = Color.White
-                )
+                if(activity != "ListarPersonagens"){
+                    Text(
+                        "Bônus Racial",
+                        modifier = Modifier.weight(1f),
+                        fontSize = 14.sp,
+                        color = Color.White
+                    )
+                }
+
             }
 
             // Exibindo os atributos e modificadores
@@ -248,7 +322,8 @@ fun PersonagemCriadoScreen(
                     label = "$atributo:",
                     nivel = valor.toString(),
                     modificador = personagem.calculaModificador(valor).toString(),
-                    bonusRaca = bonusRaca.getValue(atributo).toString()
+                    bonusRaca = bonusRaca.getValue(atributo).toString(),
+                    activity
                 )
             }
 
@@ -311,7 +386,7 @@ fun InfoRow(label: String, value: String, fontSize: Int = 16) {
 }
 
 @Composable
-fun AttributeRow(label: String, nivel: String, modificador: String, bonusRaca: String) {
+fun AttributeRow(label: String, nivel: String, modificador: String, bonusRaca: String, activity: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -326,12 +401,15 @@ fun AttributeRow(label: String, nivel: String, modificador: String, bonusRaca: S
             fontSize = 14.sp,
             color = Color.White
         )
-        Text(
-            text = bonusRaca,
-            modifier = Modifier.weight(1f),
-            fontSize = 14.sp,
-            color = Color.White
-        )
+        if(activity != "ListarPersonagens"){
+            Text(
+                text = bonusRaca,
+                modifier = Modifier.weight(1f),
+                fontSize = 14.sp,
+                color = Color.White
+            )
+        }
+
     }
 }
 

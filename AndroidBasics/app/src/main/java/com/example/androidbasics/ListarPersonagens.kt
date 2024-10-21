@@ -188,6 +188,37 @@ class ListarPersonagens : ComponentActivity() {
                 ) {
                     Text("Exibir Ficha")
                 }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        try {
+                            val intent = Intent(context, CriadorPersonagem::class.java).apply {
+                                putExtra("fromActivity", "ListarPersonagens")
+                                putExtra("id", personagem.id)
+                                putExtra("nome", personagem.nome)
+                                putExtra("raca", personagem.raca)
+                                putExtra("forca", personagem.forca)
+                                putExtra("destreza", personagem.destreza)
+                                putExtra("constituicao", personagem.constituicao)
+                                putExtra("inteligencia", personagem.inteligencia)
+                                putExtra("sabedoria", personagem.sabedoria)
+                                putExtra("carisma", personagem.carisma)
+                            }
+                            Log.d(
+                                "Buscar Personagem",
+                                "Personagem Enviado ao CriadorPersonagem"
+                            )
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            Log.e("Buscar Personagem", "Erro de envio ao CriadorPersonagem: ${e.message}")
+                        }
+                    }
+                ){
+                    Text("Trocar Atributos")
+                }
             }
         }
     }

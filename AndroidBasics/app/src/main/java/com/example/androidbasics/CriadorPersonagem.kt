@@ -17,8 +17,6 @@ import strategy.funcoes.*
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -31,14 +29,21 @@ import androidx.compose.ui.unit.sp
 class CriadorPersonagem : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val fromActivity = intent.getStringExtra("fromActivity") ?: "Desconhecido"
+        val id = intent.getIntExtra("id", 0)
+
+
+
         setContent {
-            CharacterFormScreen()
+            CharacterFormScreen(fromActivity, id)
         }
     }
 }
 
 @Composable
-fun CharacterFormScreen() {
+fun CharacterFormScreen(foreignActivity : String, id : Int) {
+
     var name by rememberSaveable { mutableStateOf("") }
     var strength by rememberSaveable { mutableStateOf("8") }
     var dexterity by rememberSaveable { mutableStateOf("8") }
@@ -209,15 +214,31 @@ fun CharacterFormScreen() {
                     onClick = {
                         try {
                             val intent = Intent(context, ExibirFicha::class.java).apply {
-                                putExtra("fromActivity", "CriadorPersongem")
-                                putExtra("nome", name)
-                                putExtra("raca", selectedRace)
-                                putExtra("forca", strength.toInt())
-                                putExtra("destreza", dexterity.toInt())
-                                putExtra("constituicao", constitution.toInt())
-                                putExtra("inteligencia", intelligence.toInt())
-                                putExtra("sabedoria", wisdom.toInt())
-                                putExtra("carisma", charisma.toInt())
+                                if(foreignActivity != "ListarPersonagens"){
+                                    putExtra("fromActivity", "CriadorPersonagem")
+                                    putExtra("nome", name)
+                                    putExtra("raca", selectedRace)
+                                    putExtra("forca", strength.toInt())
+                                    putExtra("destreza", dexterity.toInt())
+                                    putExtra("constituicao", constitution.toInt())
+                                    putExtra("inteligencia", intelligence.toInt())
+                                    putExtra("sabedoria", wisdom.toInt())
+                                    putExtra("carisma", charisma.toInt())
+
+                                }else{
+                                    putExtra("fromActivity", "ListarPersonagemOrigin")
+                                    putExtra("id", id)
+                                    putExtra("nome", name)
+                                    putExtra("raca", selectedRace)
+                                    putExtra("forca", strength.toInt())
+                                    putExtra("destreza", dexterity.toInt())
+                                    putExtra("constituicao", constitution.toInt())
+                                    putExtra("inteligencia", intelligence.toInt())
+                                    putExtra("sabedoria", wisdom.toInt())
+                                    putExtra("carisma", charisma.toInt())
+                                }
+
+
                             }
                             Log.d(
                                 "MainActivity",
