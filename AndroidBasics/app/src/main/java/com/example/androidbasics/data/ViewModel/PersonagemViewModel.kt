@@ -36,4 +36,27 @@ class PersonagemViewModel(application: Application) : AndroidViewModel(applicati
             _personagens.postValue(personagensEntity) // Atualiza o LiveData
         }
     }
+
+
+    fun buscarPersonagemPorId(id: Int): LiveData<PersonagemEntity?> {
+        val personagemPorId = MutableLiveData<PersonagemEntity?>()
+        viewModelScope.launch {
+            val personagem = personagemDao.buscarPorId(id)
+            personagemPorId.postValue(personagem)
+        }
+        return personagemPorId
+    }
+
+    fun atualizarPersonagem(personagem: PersonagemEntity) {
+        viewModelScope.launch {
+            personagemDao.atualizar(personagem)
+        }
+    }
+
+    fun deletarPersonagem(personagem: PersonagemEntity) {
+        viewModelScope.launch {
+            personagemDao.deletar(personagem)
+        }
+    }
+
 }

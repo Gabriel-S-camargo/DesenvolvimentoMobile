@@ -209,6 +209,7 @@ fun CharacterFormScreen() {
                     onClick = {
                         try {
                             val intent = Intent(context, ExibirFicha::class.java).apply {
+                                putExtra("fromActivity", "CriadorPersongem")
                                 putExtra("nome", name)
                                 putExtra("raca", selectedRace)
                                 putExtra("forca", strength.toInt())

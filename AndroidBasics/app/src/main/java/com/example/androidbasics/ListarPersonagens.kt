@@ -3,6 +3,7 @@ package com.example.androidbasics
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -99,95 +100,118 @@ class ListarPersonagens : ComponentActivity() {
 
     @Composable
     fun ExibirPersonagem(personagem: PersonagemEntity) {
-        Column(
+        val context = LocalContext.current
+        Row( // Use Row para alinhar estatísticas e botões horizontalmente
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .border(2.dp, Color.Gray, RoundedCornerShape(10.dp))
                 .background(Color.DarkGray)
-                .padding(8.dp)
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier
-                    .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val imageSettings = Modifier
-                    .size(100.dp)
 
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp)
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.guerreiro_8bit),
                     contentDescription = null,
-                    modifier = imageSettings,
+                    modifier = Modifier.size(100.dp)
                 )
-                Column(
-                    modifier = Modifier
-                        .padding(8.dp)
+
+
+                Column(modifier = Modifier.padding(start = 8.dp)) {
+                    StatisticaPersonagem("ID: ${personagem.id}", R.drawable.nome)
+                    StatisticaPersonagem("Nome: ${personagem.nome}", R.drawable.nome)
+                    StatisticaPersonagem("Raça: ${personagem.raca}", R.drawable.raca)
+                    StatisticaPersonagem("Vida: ${personagem.vida}", R.drawable.hearth)
+                }
+            }
+
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.End
+            ) {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        val viewModel = PersonagemViewModel(Application())
+                        try {
+                            viewModel.deletarPersonagem(personagem)
+                            val mIntent = intent
+                            finish()
+                            startActivity(mIntent)
+                            Log.e("DeletePersonagem", "Personagem Deletado!!")
+                        } catch (e: Exception) {
+                            Log.e("DeletePersonagem", "Erro de Deleção: ${e.message}")
+                        }
+                    }
                 ) {
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        Image(
-                            painter = painterResource(id = R.drawable.nome),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(30.dp)
-                        )
-
-                        Text(
-                            text = "Nome: " + personagem.nome,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White,
-                            modifier = Modifier
-                                .padding(8.dp)
-                        )
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-
-                        Image(
-                            painter = painterResource(id = R.drawable.raca),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(30.dp)
-                        )
-
-
-                        Text(
-                            text = "Raça: " + personagem.raca,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.White,
-                            modifier = Modifier
-                                .padding(8.dp)
-                        )
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-
-                        Image(
-                            painter = painterResource(id = R.drawable.hearth),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(30.dp)
-                        )
-
-                        Text(
-                            text = "Vida: " + personagem.vida,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.White,
-                            modifier = Modifier
-                                .padding(8.dp)
-                        )
-                    }
-
-
+                    Text("Deletar")
                 }
 
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        try {
+                            val intent = Intent(context, ExibirFicha::class.java).apply {
+                                putExtra("fromActivity", "ListarPersonagens")
+                                putExtra("id", personagem.id)
+                                putExtra("nome", personagem.nome)
+                                putExtra("raca", personagem.raca)
+                                putExtra("forca", personagem.forca)
+                                putExtra("destreza", personagem.destreza)
+                                putExtra("constituicao", personagem.constituicao)
+                                putExtra("inteligencia", personagem.inteligencia)
+                                putExtra("sabedoria", personagem.sabedoria)
+                                putExtra("carisma", personagem.carisma)
+                            }
+                            Log.d(
+                                "Buscar Personagem",
+                                "Personagem Enviado ao Exibir ficha"
+                            )
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            Log.e("Buscar Personagem", "Erro de envio ao Exibir Ficha: ${e.message}")
+                        }
+                    }
+                ) {
+                    Text("Exibir Ficha")
+                }
             }
         }
     }
+
+
+    @Composable
+    fun StatisticaPersonagem(texto: String, iconRes: Int) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = iconRes),
+                contentDescription = null,
+                modifier = Modifier.size(30.dp)
+            )
+            Text(
+                text = texto,
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
+
 }
+
 
 
 
