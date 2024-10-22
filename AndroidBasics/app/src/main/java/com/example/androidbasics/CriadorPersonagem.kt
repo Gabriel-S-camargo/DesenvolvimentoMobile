@@ -33,8 +33,6 @@ class CriadorPersonagem : ComponentActivity() {
         val fromActivity = intent.getStringExtra("fromActivity") ?: "Desconhecido"
         val id = intent.getIntExtra("id", 0)
 
-
-
         setContent {
             CharacterFormScreen(fromActivity, id)
         }

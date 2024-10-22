@@ -1,6 +1,7 @@
 package com.example.androidbasics
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -98,10 +99,35 @@ class ListarPersonagens : ComponentActivity() {
         }
     }
 
+    fun enviarValores(
+        activityDestino: Class<out ComponentActivity>,
+        context: Context,
+        personagem: PersonagemEntity
+    ) {
+        try {
+            val intent = Intent(context, activityDestino).apply {
+                putExtra("fromActivity", "ListarPersonagens")
+                putExtra("id", personagem.id)
+                putExtra("nome", personagem.nome)
+                putExtra("raca", personagem.raca)
+                putExtra("forca", personagem.forca)
+                putExtra("destreza", personagem.destreza)
+                putExtra("constituicao", personagem.constituicao)
+                putExtra("inteligencia", personagem.inteligencia)
+                putExtra("sabedoria", personagem.sabedoria)
+                putExtra("carisma", personagem.carisma)
+            }
+            Log.d("Buscar Personagem", "Personagem Enviado ao CriadorPersonagem")
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("Buscar Personagem", "Erro de envio ao CriadorPersonagem: ${e.message}")
+        }
+    }
+
     @Composable
     fun ExibirPersonagem(personagem: PersonagemEntity) {
         val context = LocalContext.current
-        Row( // Use Row para alinhar estatísticas e botões horizontalmente
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
@@ -123,7 +149,6 @@ class ListarPersonagens : ComponentActivity() {
                     modifier = Modifier.size(100.dp)
                 )
 
-
                 Column(modifier = Modifier.padding(start = 8.dp)) {
                     StatisticaPersonagem("ID: ${personagem.id}", R.drawable.nome)
                     StatisticaPersonagem("Nome: ${personagem.nome}", R.drawable.nome)
@@ -131,7 +156,6 @@ class ListarPersonagens : ComponentActivity() {
                     StatisticaPersonagem("Vida: ${personagem.vida}", R.drawable.hearth)
                 }
             }
-
 
             Column(
                 modifier = Modifier
@@ -163,27 +187,7 @@ class ListarPersonagens : ComponentActivity() {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        try {
-                            val intent = Intent(context, ExibirFicha::class.java).apply {
-                                putExtra("fromActivity", "ListarPersonagens")
-                                putExtra("id", personagem.id)
-                                putExtra("nome", personagem.nome)
-                                putExtra("raca", personagem.raca)
-                                putExtra("forca", personagem.forca)
-                                putExtra("destreza", personagem.destreza)
-                                putExtra("constituicao", personagem.constituicao)
-                                putExtra("inteligencia", personagem.inteligencia)
-                                putExtra("sabedoria", personagem.sabedoria)
-                                putExtra("carisma", personagem.carisma)
-                            }
-                            Log.d(
-                                "Buscar Personagem",
-                                "Personagem Enviado ao Exibir ficha"
-                            )
-                            context.startActivity(intent)
-                        } catch (e: Exception) {
-                            Log.e("Buscar Personagem", "Erro de envio ao Exibir Ficha: ${e.message}")
-                        }
+                        enviarValores(ExibirFicha::class.java, context, personagem)
                     }
                 ) {
                     Text("Exibir Ficha")
@@ -194,35 +198,14 @@ class ListarPersonagens : ComponentActivity() {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        try {
-                            val intent = Intent(context, CriadorPersonagem::class.java).apply {
-                                putExtra("fromActivity", "ListarPersonagens")
-                                putExtra("id", personagem.id)
-                                putExtra("nome", personagem.nome)
-                                putExtra("raca", personagem.raca)
-                                putExtra("forca", personagem.forca)
-                                putExtra("destreza", personagem.destreza)
-                                putExtra("constituicao", personagem.constituicao)
-                                putExtra("inteligencia", personagem.inteligencia)
-                                putExtra("sabedoria", personagem.sabedoria)
-                                putExtra("carisma", personagem.carisma)
-                            }
-                            Log.d(
-                                "Buscar Personagem",
-                                "Personagem Enviado ao CriadorPersonagem"
-                            )
-                            context.startActivity(intent)
-                        } catch (e: Exception) {
-                            Log.e("Buscar Personagem", "Erro de envio ao CriadorPersonagem: ${e.message}")
-                        }
+                        enviarValores(CriadorPersonagem::class.java, context, personagem)
                     }
-                ){
+                ) {
                     Text("Trocar Atributos")
                 }
             }
         }
     }
-
 
     @Composable
     fun StatisticaPersonagem(texto: String, iconRes: Int) {
@@ -240,7 +223,6 @@ class ListarPersonagens : ComponentActivity() {
             )
         }
     }
-
 }
 
 
