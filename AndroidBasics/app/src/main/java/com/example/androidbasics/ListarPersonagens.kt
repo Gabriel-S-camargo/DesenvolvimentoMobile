@@ -21,13 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
-import com.example.androidbasics.data.database.AppDatabase
+import androidx.compose.ui.platform.LocalContext    
 import com.example.androidbasics.data.entities.PersonagemEntity
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import com.example.androidbasics.data.ViewModel.PersonagemViewModel
+import com.example.androidbasics.data.viewModel.PersonagemViewModel
 
 class ListarPersonagens : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +98,7 @@ class ListarPersonagens : ComponentActivity() {
         }
     }
 
-    fun enviarValores(
+    private fun enviarValores(
         activityDestino: Class<out ComponentActivity>,
         context: Context,
         personagem: PersonagemEntity

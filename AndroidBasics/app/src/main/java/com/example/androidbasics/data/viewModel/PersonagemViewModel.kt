@@ -1,4 +1,4 @@
-package com.example.androidbasics.data.ViewModel
+package com.example.androidbasics.data.viewModel
 
 import Personagem
 import android.app.Application
@@ -30,7 +30,7 @@ class PersonagemViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-     fun buscarPersonagens() {
+    fun buscarPersonagens() {
         viewModelScope.launch {
             val personagensEntity = personagemDao.buscarTodos()
             _personagens.postValue(personagensEntity) // Atualiza o LiveData

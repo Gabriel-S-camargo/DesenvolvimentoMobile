@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import com.example.androidbasics.data.ViewModel.PersonagemViewModel
+import com.example.androidbasics.data.viewModel.PersonagemViewModel
 import com.example.androidbasics.data.conversores.toEntity
 import com.example.androidbasics.data.conversores.toPersonagem
 import strategy.funcoes.racas
